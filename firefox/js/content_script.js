@@ -3,11 +3,15 @@
 //TODO:
 //All this fucking crap must be refactored in next major version
 
-
+var AppState = {
+	Opts: {
+		isNeedtoShowDealers: true
+	}
+};
 
 function drawHepardButton() {
- 	if ($('#hepart_button').length != 0) return;
-	
+	if ($('#hepart_button').length != 0) return;
+
 	var d = document.createElement('span');
 	$(d).attr('id', 'hepart_button')
 		.attr('data-content', getTranslatedText("hepart_run"))
@@ -65,6 +69,13 @@ function insertTableRows(data) {
 		container.after($(tmpl));
 	}
 
+	if (data.ifs) {	
+		var container = $(document.querySelectorAll('[data-uname~=lotdetailSaleinformationsaledatelabel]')).parent();
+		var a = new Date(data.ad);
+		var tmpl = '<div class="details auction_date"><label >Sale Date:</label><div><div><span class="col1 lot-details-desc padding-right sale-date">'+dateFormat(a, "ddd. mmm dS, yyyy h:MM TT")+'</span></div></div></div>';
+		container.after($(tmpl));
+	}
+
 	if (!isSellerRowDataAvailable && !isRepairCostDataAvailable && !isFinalPriceDataAvailable) {
 		var container = $('#hepart_button');
 		var tmpl = "<span id='hepart_no_data'>" + getTranslatedText("hepart_no_data") + "</span>";
@@ -81,24 +92,43 @@ var formatter = new Intl.NumberFormat('en-US', {
 
 browser.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
-		 if (request.action === "drawHepartBtn") {
+		if (request.action === "drawHepartBtn") {
 			var i = setInterval(
 				function () {
 					if ($('#email').length === 0) return;
 					clearInterval(i);
 					drawHepardButton();
 				}, 1000);
-		} 
+		}
 		if (request.action === "drawDealers") {
 			var i = setInterval(
 				function () {
 					if ($('#serverSideDataTable tr').length === 0) return;
 					clearInterval(i);
 					markDealersOnTable('dealersList', '#serverSideDataTable tr');
-				}, 2000);
+				}, 1000);
 		}
 	}
 );
+
+
+/*
+Options start
+*/
+$(function () {
+	function onError(error) {
+		console.log(`Error: ${error}`);
+	}
+	function onGot(item) {
+		AppState.Opts.isNeedtoShowDealers = item.isNeedtoShowDealers;
+	}
+	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
+	isNeedtoShowDealers.then(onGot, onError);
+});
+
+/*
+Options end
+*/
 
 function storeDataToDB(storageName, lotId) {
 	browser.storage.local.get(storageName, function (obj) {
@@ -125,8 +155,9 @@ function putIntoStore(storageName, storedData) {
 }
 
 function markDealersOnTable(storageName, element) {
-	var selector = $(element);
+	if (!AppState.Opts.isNeedtoShowDealers) return;
 
+	var selector = $(element);
 	browser.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (storedData) {

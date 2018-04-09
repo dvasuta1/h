@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #393939;
+ 
+}
+header {
+    font-size: 15px;
+}
+section {
+    padding: 20px 5px;
+    font-size: 14px;
+}
+#status {
+    padding: 10px 5px; 
+    color: gray;
+}
+
+input[type=checkbox], input[type=radio] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+  }
+  
+  input[type=radio] {
+    bottom: 2px;
+  } 
+  .checkbox_label span {
+      padding-left:5px;
+  }
+  #save {
+      width: 85px;
+  }

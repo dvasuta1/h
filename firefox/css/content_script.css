@@ -43,7 +43,7 @@
 	background-color: gray; 
 	cursor: default;
 }
-.hepart_row, .sold.hepart_final_price {
+.hepart_row, .sold.hepart_final_price, .auction_date {
 	background-color: orange;
 }
 #hepart_no_data {

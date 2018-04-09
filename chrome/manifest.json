@@ -32,6 +32,10 @@
             "js": ["js/jquery.min.js", "js/underscore-min.js", "js/translations.js", "js/content_script.js"]
         }
     ],
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    },
 
     "web_accessible_resources": [
       "img/*"

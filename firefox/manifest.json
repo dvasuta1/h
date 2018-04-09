@@ -10,7 +10,6 @@
         "48": "img/ext_icons/heppart_logo_48.png",
         "128": "img/ext_icons/heppart_logo_128.png"
     },
-
     "browser_action": {
         "default_icon": {
             "19": "img/ext_icons/ic_bus_articulated_front_black_18dp.png",
@@ -19,19 +18,20 @@
         "default_title": "__MSG_extName__",
         "browser_style": true
     },
-
     "background": {
         "scripts": ["js/storage.js", "js/background.js"]
     },
-
     "content_scripts": [
         {
             "matches": ["https://www.copart.com/*"],
             "css": ["css/content_script.css"],
-            "js": ["js/jquery.min.js", "js/underscore-min.js", "js/translations.js", "js/content_script.js"]
+            "js": ["js/jquery.min.js", "js/underscore-min.js", "lib/date.format.js","js/translations.js", "js/content_script.js"]
         }
     ],
-
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
+      },
     "web_accessible_resources": [
       "img/*"
     ],  

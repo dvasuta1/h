@@ -10,5 +10,25 @@
     "hepart_run": {
         "message": "Поехали!",
         "description": "Run button"
-    }     
+    },
+    "o_page_title": {
+        "message": "Hepart",
+        "description": "Hepart"
+    },
+    "o_title": {
+        "message": "Настройки",
+        "description": "Hepart"
+    },
+    "o_show_found_dealers": {
+        "message": "Отображать диллеров на странице поиска",
+        "description": "Hepart"
+    },
+    "o_save": {
+        "message": "Сохранить",
+        "description": "Hepart"
+    },
+    "o_saved": {
+        "message": "Настройки сохранены",
+        "description": "Hepart"
+    }
 }
