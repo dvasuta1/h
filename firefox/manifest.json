@@ -4,7 +4,6 @@
     "short_name": "__MSG_extName__",
     "version": "0.1.7",
     "manifest_version": 2,
-    "minimum_chrome_version": "25", 
     "default_locale": "en", 
     "icons": {
         "16": "img/ext_icons/heppart_logo_16.png",
@@ -12,17 +11,17 @@
         "128": "img/ext_icons/heppart_logo_128.png"
     },
 
-    "page_action": {
+    "browser_action": {
         "default_icon": {
             "19": "img/ext_icons/ic_bus_articulated_front_black_18dp.png",
             "38": "img/ext_icons/ic_bus_articulated_front_black_48dp.png"
         },
-        "default_title": "__MSG_extName__"
+        "default_title": "__MSG_extName__",
+        "browser_style": true
     },
 
     "background": {
-        "scripts": ["js/storage.js", "js/background.js"],
-        "persistent": false
+        "scripts": ["js/storage.js", "js/background.js"]
     },
 
     "content_scripts": [

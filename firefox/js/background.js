@@ -1,6 +1,6 @@
 // Fired when the extension is first installed, when the extension is updated to a new version, and when Chrome is updated to a new version
 // http://developer.chrome.com/extensions/runtime.html#event-onInstalled
-chrome.runtime.onInstalled.addListener(function (details) {
+browser.runtime.onInstalled.addListener(function (details) {
 
     // good place to set default options
     function setDefaults(callback) {
@@ -38,21 +38,29 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
 });
 
-chrome.runtime.onUpdateAvailable.addListener(function (details) {
+browser.runtime.onUpdateAvailable.addListener(function (details) {
     // when an update is available - reload extension
     // update will be install immediately
-    chrome.runtime.reload();
+    browser.runtime.reload();
 });
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete' && 
-        tab.url.indexOf('/lot/') !== -1 && tab.active) {
-        chrome.tabs.sendMessage(tabId, { action: 'drawHepartBtn' });
+browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    var isOnSearchPage = ['/quickpick/', '/search/', '/vehicleFinderSearch/'].filter(function (page) {
+        return tab.url.includes(page);
+    });
+    var isOnLotPage = tab.url.includes('/lot/');
+    var action;
+
+    if (changeInfo.status == 'complete' && tab.active) {
+        if (isOnLotPage) {
+            action = 'drawHepartBtn';
+        } else if (isOnSearchPage) {
+            action = 'drawDealers';
+        }
     }
-    if (changeInfo.status == 'complete' && 
-        (tab.url.includes('/quickpick/') || tab.url.includes('/search/') || tab.url.includes('/vehicleFinderSearch/'))
-         && tab.active) {
-        chrome.tabs.sendMessage(tabId, { action: 'drawDealers' });
+    if (action) {
+        browser.tabs.sendMessage(tabId, {
+            action: action
+        });
     }
 });
-

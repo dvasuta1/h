@@ -16,11 +16,11 @@ window.addEventListener('load', function () {
 
     function saveToStorage(val) {
         storage.area.set(val, function () {
-            showMessage(chrome.runtime.lastError ? showMessage('error') : showMessage('success'));
+            showMessage(browser.runtime.lastError ? showMessage('error') : showMessage('success'));
             // dispatch custom event
             document.dispatchEvent(new CustomEvent('optionSaved', {
                 detail: {
-                    success: chrome.runtime.lastError ? false : true,
+                    success: browser.runtime.lastError ? false : true,
                     val: val
                 }
             }));

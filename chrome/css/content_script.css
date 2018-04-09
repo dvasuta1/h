@@ -1,7 +1,7 @@
 #hepart_button {
 	color: white;
     border-radius: 6px;
-	padding: 3px 8px 3px 8px;
+	padding: 2px 8px;
 	height: 26px;
 	margin-bottom: 6px;
 	display: inline-block;
@@ -10,27 +10,30 @@
     transition: width 300ms;
 	white-space: nowrap;
 	cursor: pointer;
-	background-color: orange; 
+	background: orange;
 	vertical-align: middle;
+	margin-right: 4px;
+}
+#hepart_button:hover {
+	background: linear-gradient(60deg, orange, orangered);
 }
 #hepart_button::before {
     background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/ic_bus_articulated_front_black_18dp.png') no-repeat transparent;
 	background-size: contain;
-	background-position: 5px center;
 	background-size: 100%;
     background-position: center;
 	display: inline-block;
 	content: '';
-    transform: translateY(6px);
+    transform: translateY(3px);
     line-height: 37px;
 	vertical-align: -webkit-baseline-middle;
-	transform: translateY(-25%) !important;
+	vertical-align: baseline;
 	height: 16px;
     width: 27px;
-	margin-right: 6px;
+	margin-right: 8px;
 }
 
-span#hepart_button::after {
+#hepart_button::after {
     content: attr(data-content);
     display: inline-block;
 }
@@ -40,10 +43,7 @@ span#hepart_button::after {
 	background-color: gray; 
 	cursor: default;
 }
-.hepart_row {
-	background-color: orange;
-}
-.sold.hepart_final_price {
+.hepart_row, .sold.hepart_final_price {
 	background-color: orange;
 }
 #hepart_no_data {
@@ -53,5 +53,6 @@ span#hepart_button::after {
 	background-color: orange;
 }
 #serverSideDataTable.dataTable  tr.dealer {
-	background-color: #ff822a !important;
+	background: #F2C14E;
+	background: linear-gradient(60deg, #F2C14E, #F78154) !important;
 }

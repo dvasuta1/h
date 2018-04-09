@@ -13,7 +13,7 @@ window.addEventListener('load', function () {
 
         function replacer(text) {
             return text.replace(/\{\{([\s\S]*?)\}\}/gm, function (str, g1) {
-                return chrome.i18n.getMessage(g1.trim()) || str;
+                return browser.i18n.getMessage(g1.trim()) || str;
             });
         }
 

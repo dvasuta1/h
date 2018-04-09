@@ -63,7 +63,7 @@ function getTranslatedText(key) {
 		return getCookie('userLang') || 'en';
 	};
 
-	var text = chrome.i18n.getMessage(key);
+	var text = browser.i18n.getMessage(key);
 	var lang = getLang();
 	var storedTranslations = domTranslations[lang];
 	if (storedTranslations[key] && storedTranslations[key].message) {
@@ -72,24 +72,3 @@ function getTranslatedText(key) {
 	return text;
 
 }
-
-/*class LocalisationClass {
-	getCookie(name) {
-		var value = "; " + document.cookie;
-		var parts = value.split("; " + name + "=");
-		if (parts.length == 2) return parts.pop().split(";").shift();
-	}
-	get lang() {
-		return this.getCookie('userLang') || 'en';
-	}
-	getMessage(key) {
-		var text = chrome.i18n.getMessage(key);
-		var storedTranslations = domTranslations[this.lang];
-		if (storedTranslations[key] && storedTranslations[key].message) {
-			text = storedTranslations[key].message;
-		}
-		return text;
-	}
-}
-
-var localeEx = new LocalisationClass(); */

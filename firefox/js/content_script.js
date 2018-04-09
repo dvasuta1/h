@@ -6,6 +6,8 @@
 
 
 function drawHepardButton() {
+ 	if ($('#hepart_button').length != 0) return;
+	
 	var d = document.createElement('span');
 	$(d).attr('id', 'hepart_button')
 		.attr('data-content', getTranslatedText("hepart_run"))
@@ -77,16 +79,16 @@ var formatter = new Intl.NumberFormat('en-US', {
 	maximumFractionDigits: 0
 });
 
-chrome.extension.onMessage.addListener(
+browser.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
-		/*if (request.action === "drawHepartBtn") {
+		 if (request.action === "drawHepartBtn") {
 			var i = setInterval(
 				function () {
 					if ($('#email').length === 0) return;
 					clearInterval(i);
 					drawHepardButton();
 				}, 1000);
-		}*/
+		} 
 		if (request.action === "drawDealers") {
 			var i = setInterval(
 				function () {
@@ -95,23 +97,11 @@ chrome.extension.onMessage.addListener(
 					markDealersOnTable('dealersList', '#serverSideDataTable tr');
 				}, 2000);
 		}
-		if (request.action === "drawHepartBtn") {
-			var mutationsCallback = function (allmutations) {
-					mo.disconnect();
-					drawHepardButton();
-				},
-				mo = new MutationObserver(mutationsCallback),
-				options = {
-					'childList': true,
-					'attributeFilter': ['class']
-				}
-			mo.observe($('.inner-wrap')[0], options);
-		}
 	}
 );
 
 function storeDataToDB(storageName, lotId) {
-	chrome.storage.local.get(storageName, function (obj) {
+	browser.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
 			var d = JSON.stringify(new Array(lotId));
@@ -127,8 +117,8 @@ function storeDataToDB(storageName, lotId) {
 function putIntoStore(storageName, storedData) {
 	var dataToStore = {};
 	dataToStore[storageName] = storedData;
-	chrome.storage.local.set(dataToStore, function () {
-		if (chrome.runtime.error) {
+	browser.storage.local.set(dataToStore, function () {
+		if (browser.runtime.lastError) {
 			console.log("Runtime error.");
 		}
 	});
@@ -137,11 +127,11 @@ function putIntoStore(storageName, storedData) {
 function markDealersOnTable(storageName, element) {
 	var selector = $(element);
 
-	chrome.storage.local.get(storageName, function (obj) {
+	browser.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (storedData) {
 			_.each(storedData, function (item) {
-				selector.find(' a[data-url="./lot/' + item + '"]').closest('tr').addClass('dealer');
+				selector.find('a[data-url="./lot/' + item + '"]').closest('tr').addClass('dealer');
 			});
 		}
 	});
