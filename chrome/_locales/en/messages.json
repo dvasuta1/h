@@ -1,0 +1,14 @@
+{
+    "extName": {
+        "message": "Hepart",
+        "description": "Ім'я додатку. Не перекладати"
+    },
+    "extDescr": {
+        "message": "Copart helper",
+        "description": "Короткий опис додатку"
+    },
+    "hepart_run": {
+        "message": "Let's Hepart!",
+        "description": "Run button"
+    }
+}   

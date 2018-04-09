@@ -1,0 +1,57 @@
+#hepart_button {
+	color: white;
+    border-radius: 6px;
+	padding: 3px 8px 3px 8px;
+	height: 26px;
+	margin-bottom: 6px;
+	display: inline-block;
+	overflow: hidden;
+    position: relative;
+    transition: width 300ms;
+	white-space: nowrap;
+	cursor: pointer;
+	background-color: orange; 
+	vertical-align: middle;
+}
+#hepart_button::before {
+    background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/ic_bus_articulated_front_black_18dp.png') no-repeat transparent;
+	background-size: contain;
+	background-position: 5px center;
+	background-size: 100%;
+    background-position: center;
+	display: inline-block;
+	content: '';
+    transform: translateY(6px);
+    line-height: 37px;
+	vertical-align: -webkit-baseline-middle;
+	transform: translateY(-25%) !important;
+	height: 16px;
+    width: 27px;
+	margin-right: 6px;
+}
+
+span#hepart_button::after {
+    content: attr(data-content);
+    display: inline-block;
+}
+
+#hepart_button.active { 
+	width: 42px !important;
+	background-color: gray; 
+	cursor: default;
+}
+.hepart_row {
+	background-color: orange;
+}
+.sold.hepart_final_price {
+	background-color: orange;
+}
+#hepart_no_data {
+	padding: 1px 3px;
+	margin-right:10px;
+	color:white;
+	background-color: orange;
+}
+#serverSideDataTable.dataTable  tr.dealer {
+	background-color: #ff822a !important;
+}
