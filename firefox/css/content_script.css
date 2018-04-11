@@ -38,13 +38,13 @@
     display: inline-block;
 }
 
-#hepart_button.active { 
+#hepart_button.active,  #hepart_button.active:hover{ 
 	width: 42px !important;
-	background-color: gray; 
+	background: gray; 
 	cursor: default;
 }
 .hepart_row, .sold.hepart_final_price, .auction_date {
-	background-color: orange;
+	background: linear-gradient(to left, #F2C14E, #F78154) !important;
 }
 #hepart_no_data {
 	padding: 1px 3px;
@@ -53,6 +53,6 @@
 	background-color: orange;
 }
 #serverSideDataTable.dataTable  tr.dealer {
-	background: #F2C14E;
-	background: linear-gradient(60deg, #F2C14E, #F78154) !important;
+	background: url('../img/ext_icons/5_dealer_32.png') repeat, linear-gradient(to top, #F2C14E, #F78154) repeat 0 0 !important; 
+	text-shadow: 0px 0px 2px rgba(255,255,255,0.7);
 }

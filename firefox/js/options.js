@@ -1,5 +1,6 @@
 function save_options() {
     var isNeedtoShowDealers =  $('#showDealersInSearchPage').prop('checked');
+    console.log('showDealersInSearchPage', isNeedtoShowDealers);
     browser.storage.local.set({
         isNeedtoShowDealers: isNeedtoShowDealers
     }, function() {

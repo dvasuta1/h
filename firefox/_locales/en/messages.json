@@ -11,24 +11,28 @@
         "message": "Let's Hepart!",
         "description": "Run button"
     },
+    "hepart_sale_date": {
+        "message": "Sale Date:",
+        "description": "Run button"
+    },
     "o_page_title": {
-        "message": "Hepart",
+        "message": "Settings",
         "description": "Hepart"
     },
     "o_title": {
-        "message": "Настройки",
+        "message": "Settings",
         "description": "Hepart"
     },
     "o_show_found_dealers": {
-        "message": "Отображать диллеров на странице поиска",
+        "message": "Display previously found dealer cars on the search page",
         "description": "Hepart"
     },
     "o_save": {
-        "message": "Сохранить",
+        "message": "Save",
         "description": "Hepart"
     },
     "o_saved": {
-        "message": "Настройки сохранены",
+        "message": "Settings have been saved",
         "description": "Hepart"
     }
 }

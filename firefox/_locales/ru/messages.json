@@ -11,8 +11,12 @@
         "message": "Поехали!",
         "description": "Run button"
     },
+    "hepart_sale_date": {
+        "message": "Дата продажи:",
+        "description": "Run button"
+    },
     "o_page_title": {
-        "message": "Hepart",
+        "message": "Настройки",
         "description": "Hepart"
     },
     "o_title": {
@@ -20,7 +24,7 @@
         "description": "Hepart"
     },
     "o_show_found_dealers": {
-        "message": "Отображать диллеров на странице поиска",
+        "message": "Отображать ранее найденные автомобили дилеров на странице поиска",
         "description": "Hepart"
     },
     "o_save": {

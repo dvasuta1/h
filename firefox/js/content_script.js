@@ -69,14 +69,14 @@ function insertTableRows(data) {
 		container.after($(tmpl));
 	}
 
-	if (data.ifs) {	
-		var container = $(document.querySelectorAll('[data-uname~=lotdetailSaleinformationsaledatelabel]')).parent();
+	if (data.ifs) {
+		var container = $(document.querySelectorAll('[data-uname~=lotdetailSaleinformationsaledatelabel]')).parent().hide();
 		var a = new Date(data.ad);
-		var tmpl = '<div class="details auction_date"><label >Sale Date:</label><div><div><span class="col1 lot-details-desc padding-right sale-date">'+dateFormat(a, "ddd. mmm dS, yyyy h:MM TT")+'</span></div></div></div>';
+		var tmpl = '<div class="details auction_date"><label>'+ getTranslatedText("hepart_sale_date") +'</label><div><div><span class="col1 lot-details-desc padding-right sale-date">' + dateFormat(a, "ddd. mmm dS, yyyy h:MM TT") + '</span></div></div></div>';
 		container.after($(tmpl));
 	}
 
-	if (!isSellerRowDataAvailable && !isRepairCostDataAvailable && !isFinalPriceDataAvailable) {
+	if (!isSellerRowDataAvailable && !isRepairCostDataAvailable && !isFinalPriceDataAvailable && !data.ifs) {
 		var container = $('#hepart_button');
 		var tmpl = "<span id='hepart_no_data'>" + getTranslatedText("hepart_no_data") + "</span>";
 		container.before($(tmpl));
@@ -106,7 +106,7 @@ browser.runtime.onMessage.addListener(
 					if ($('#serverSideDataTable tr').length === 0) return;
 					clearInterval(i);
 					markDealersOnTable('dealersList', '#serverSideDataTable tr');
-				}, 1000);
+				}, 2000);
 		}
 	}
 );
@@ -116,14 +116,16 @@ browser.runtime.onMessage.addListener(
 Options start
 */
 $(function () {
-	function onError(error) {
-		console.log(`Error: ${error}`);
-	}
-	function onGot(item) {
-		AppState.Opts.isNeedtoShowDealers = item.isNeedtoShowDealers;
-	}
 	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
-	isNeedtoShowDealers.then(onGot, onError);
+	isNeedtoShowDealers.then(function (item) {
+		if (!_.isUndefined(item.isNeedtoShowDealers)) {
+			AppState.Opts.isNeedtoShowDealers = item.isNeedtoShowDealers;
+		} else {
+			AppState.Opts.isNeedtoShowDealers = true;
+		}
+	}, function (error) {
+		console.error(`Error: ${error}`);
+	});
 });
 
 /*
@@ -149,12 +151,13 @@ function putIntoStore(storageName, storedData) {
 	dataToStore[storageName] = storedData;
 	browser.storage.local.set(dataToStore, function () {
 		if (browser.runtime.lastError) {
-			console.log("Runtime error.");
+			console.error("Runtime error.");
 		}
 	});
 }
 
 function markDealersOnTable(storageName, element) {
+
 	if (!AppState.Opts.isNeedtoShowDealers) return;
 
 	var selector = $(element);

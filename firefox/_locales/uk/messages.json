@@ -6,5 +6,29 @@
     "extDescr": {
         "message": "Copart-помічник",
         "description": "Короткий опис додатку"
-    } 
+    },
+    "hepart_sale_date": {
+        "message": "Sale Date:",
+        "description": "Run button"
+    },
+    "o_page_title": {
+        "message": "Hepart",
+        "description": "Hepart"
+    },
+    "o_title": {
+        "message": "Налаштування",
+        "description": "Hepart"
+    },
+    "o_show_found_dealers": {
+        "message": "Відображати вже знайдені автомобілі дилерів на сторінці пошуку",
+        "description": "Hepart"
+    },
+    "o_save": {
+        "message": "Зберегти",
+        "description": "Hepart"
+    },
+    "o_saved": {
+        "message": "Налаштування збережено",
+        "description": "Hepart"
+    }
 }

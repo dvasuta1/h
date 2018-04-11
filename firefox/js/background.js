@@ -30,6 +30,12 @@ browser.runtime.onInstalled.addListener(function (details) {
     }
 
     switch (details.reason) {
+        case 'install':
+            browser.storage.local.clear();
+            browser.storage.local.set({
+                isNeedtoShowDealers: true
+            });
+            break;
         case 'update':
             setDefaults();
             break;
