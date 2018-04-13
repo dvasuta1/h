@@ -45,14 +45,22 @@ chrome.runtime.onUpdateAvailable.addListener(function (details) {
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete' && 
-        tab.url.indexOf('/lot/') !== -1 && tab.active) {
-        chrome.tabs.sendMessage(tabId, { action: 'drawHepartBtn' });
+    var isOnSearchPage = ['/quickpick/', '/search/', '/vehicleFinderSearch/'].filter(function (page) {
+        return tab.url.includes(page);
+    });
+    var isOnLotPage = tab.url.includes('/lot/');
+    var action;
+
+    if (changeInfo.status == 'complete' && tab.active) {
+        if (isOnLotPage) {
+            action = 'drawHepartBtn';
+        } else if (isOnSearchPage) {
+            action = 'drawDealers';
+        }
     }
-    if (changeInfo.status == 'complete' && 
-        (tab.url.includes('/quickpick/') || tab.url.includes('/search/') || tab.url.includes('/vehicleFinderSearch/'))
-         && tab.active) {
-        chrome.tabs.sendMessage(tabId, { action: 'drawDealers' });
+    if (action) {
+        chrome.tabs.sendMessage(tabId, {
+            action: action
+        });
     }
 });
-

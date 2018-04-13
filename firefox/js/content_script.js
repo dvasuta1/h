@@ -72,7 +72,7 @@ function insertTableRows(data) {
 	if (data.ifs) {
 		var container = $(document.querySelectorAll('[data-uname~=lotdetailSaleinformationsaledatelabel]')).parent().hide();
 		var a = new Date(data.ad);
-		var tmpl = '<div class="details auction_date"><label>'+ getTranslatedText("hepart_sale_date") +'</label><div><div><span class="col1 lot-details-desc padding-right sale-date">' + dateFormat(a, "ddd. mmm dS, yyyy h:MM TT") + '</span></div></div></div>';
+		var tmpl = '<div class="details auction_date"><label>' + getTranslatedText("hepart_sale_date") + '</label><div><div><span class="col1 lot-details-desc padding-right sale-date">' + dateFormat(a, "ddd. mmm dS, yyyy h:MM TT") + '</span></div></div></div>';
 		container.after($(tmpl));
 	}
 
@@ -105,7 +105,10 @@ browser.runtime.onMessage.addListener(
 				function () {
 					if ($('#serverSideDataTable tr').length === 0) return;
 					clearInterval(i);
-					markDealersOnTable('dealersList', '#serverSideDataTable tr');
+					console.log('LOADED');
+					listenMutations();
+					//markDealersOnTable('dealersList', '#serverSideDataTable tr');
+					
 				}, 2000);
 		}
 	}
@@ -165,8 +168,65 @@ function markDealersOnTable(storageName, element) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (storedData) {
 			_.each(storedData, function (item) {
-				selector.find('a[data-url="./lot/' + item + '"]').closest('tr').addClass('dealer');
+				selector.find('a[data-url="./lot/' + item + '"]').closest('tr').removeClass('dealer').addClass('dealer');
 			});
 		}
 	});
 }
+
+function listenMutations(){
+	var callback = function(allmutations){
+		console.log('MUTATIONS');
+		markDealersOnTable('dealersList', '#serverSideDataTable tr');
+	},
+	mo = new MutationObserver(callback),
+	options = {
+		'attributeFilter': ['class'],
+		'childList': true,
+		'subtree': false,
+		'attributes': true
+	}	
+	mo.observe(document.getElementById('serverSideDataTable_paginate'), options);	
+	markDealersOnTable('dealersList', '#serverSideDataTable tr');
+	
+}
+
+function markForbiddenState() {
+	var states = ['- AL', ' - WI', '- MI', '- AK', '- HI'];
+	//$('#serverSideDataTable tr td span[data-uname="lotsearchLotyardname"]:contains("AL -")').closest('tr').addClass('forbiddenState');
+	/*
+		var callback = function(allmutations){
+			// allmutations — массив, и мы можем использовать соответствующие методы JavaScript.
+			allmutations.map( function(mr){
+				var mt = 'Тип изменения: ' + mr.type;  // записываем тип изменения
+				mt += 'Измененный элемент: ' + mr.target; // записываем измененный элемент.
+				console.debug( mt );
+			});
+		
+		},
+		mo = new MutationObserver(callback),
+		options = {
+			// обязательный параметр: наблюдаем за добавлением и удалением дочерних элементов.
+			'childList': true,
+			// наблюдаем за добавлением и удалением дочерних элементов любого уровня вложенности.
+			'subtree': true,
+			'attributes': true
+		}
+		mo.observe($('#serverSideDataTable tr')[0], options); */
+}
+
+/*
+document.addEventListener('DOMContentLoaded', function () {
+	var targetNode = $('#serverSideDataTable')[0];
+
+	var observer = new MutationObserver(function (mutationRecords) {
+		$('#serverSideDataTable tr td span[data-uname="lotsearchLotyardname"]:contains("AL -")').closest('tr').addClass('forbiddenState');
+	});
+
+	observer.observe(targetNode,
+		{  // options:
+			subtree: true,  // observe the subtree rooted at myNode
+			childList: true
+		});
+});
+*/

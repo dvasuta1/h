@@ -8,7 +8,7 @@
     "icons": {
         "16": "img/ext_icons/heppart_logo_16.png",
         "48": "img/ext_icons/heppart_logo_48.png",
-        "96": "img/ext_icons/heppart_logo_128.png"
+        "96": "img/ext_icons/heppart_logo_96.png"
     },
     "applications": {
         "gecko": {
@@ -58,6 +58,7 @@
         "https://www.copart.com/*",
         "activeTab",
         "storage",
-        "tabs"
+        "tabs",
+        "notifications"
     ]
 }

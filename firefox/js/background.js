@@ -1,7 +1,7 @@
 // Fired when the extension is first installed, when the extension is updated to a new version, and when Chrome is updated to a new version
 // http://developer.chrome.com/extensions/runtime.html#event-onInstalled
 browser.runtime.onInstalled.addListener(function (details) {
-
+console.log('details.reason', details.reason);
     // good place to set default options
     function setDefaults(callback) {
         storage.area.get(function (stored_options) {
@@ -29,12 +29,25 @@ browser.runtime.onInstalled.addListener(function (details) {
 
     }
 
+    browser.notifications.create({
+        "type": "basic",
+        "iconUrl": browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
+        "title": "Hepart вещает!",
+        "message": "Я немножно обновился. Совсем немножко! Только фоновую картинку для диллеров, да и еще помелочи. Ничего особенного. Все работает так же как и работало."
+      });
+
     switch (details.reason) {
         case 'install':
-            browser.storage.local.clear();
+           /* browser.storage.local.clear();
             browser.storage.local.set({
                 isNeedtoShowDealers: true
-            });
+            });*/
+            browser.notifications.create({
+                "type": "basic",
+                "iconUrl": browser.extension.getURL("img/ext_icons/heppart_logo_48.png"),
+                "title": "Hepart вещает!",
+                "message": "Я немножно обновился. Совсем немножко"
+              });
             break;
         case 'update':
             setDefaults();

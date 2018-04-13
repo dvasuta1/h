@@ -1,6 +1,5 @@
 function save_options() {
     var isNeedtoShowDealers =  $('#showDealersInSearchPage').prop('checked');
-    console.log('showDealersInSearchPage', isNeedtoShowDealers);
     browser.storage.local.set({
         isNeedtoShowDealers: isNeedtoShowDealers
     }, function() {
@@ -13,7 +12,6 @@ function save_options() {
   }
   
  function restore_options() {
-    // Use default value color = 'red' and likesColor = true.
     browser.storage.local.get({
         isNeedtoShowDealers: true
     }, function(items) {
@@ -22,3 +20,11 @@ function save_options() {
   }
   document.addEventListener('DOMContentLoaded', restore_options);
   $('#save').on('click', save_options);
+
+
+  // lotsearchSaletitletype  
+  // ST - AL, 
+  //CT - WI
+  // - MI
+  // - AK
+  // HI

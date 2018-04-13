@@ -3,9 +3,15 @@
 //TODO:
 //All this fucking crap must be refactored in next major version
 
-
+var AppState = {
+	Opts: {
+		isNeedtoShowDealers: true
+	}
+};
 
 function drawHepardButton() {
+	if ($('#hepart_button').length != 0) return;
+
 	var d = document.createElement('span');
 	$(d).attr('id', 'hepart_button')
 		.attr('data-content', getTranslatedText("hepart_run"))
@@ -54,23 +60,30 @@ function insertTableRows(data) {
 	if (data.rc) {
 		var container = $(document.querySelectorAll('[data-uname~="lotdetailVin"]'));
 		container = container.parent().parent();
-		var tmpl = "<div id='hepart_repair_cost'><div class='details hepart_row'><label>" + getTranslatedText("hepart_repair_cost") + "</label><span class='lot-details-desc col-md-6'>" + formatter.format(data.rc) + " " + data.cuc + "</span></div></div>"
+		var tmpl = "<div id='hepart_repair_cost'><div class='details hepart_row'><label>" + getTranslatedText("hepart_repair_cost") + "</label><span class='lot-details-desc col-md-6'>" + formatter1.format(data.rc) + " " + data.cuc + "</span></div></div>"
 		container.prepend($(tmpl));
 	}
 	if (data.ahb !== 0) {
 		var container = $(document.querySelectorAll('[name=counterBidForm] .sold-bid .sold'));
-		var tmpl = "<div id='hepart_final_price' class='sold hepart_final_price'>" + getTranslatedText("hepart_final_price") + formatter.format(data.ahb) + " " + data.cuc + "</div>"
+		var tmpl = "<div id='hepart_final_price' class='sold hepart_final_price'>" + getTranslatedText("hepart_final_price") + formatter1.format(data.ahb) + " " + data.cuc + "</div>"
 		container.after($(tmpl));
 	}
 
-	if (!isSellerRowDataAvailable && !isRepairCostDataAvailable && !isFinalPriceDataAvailable) {
+	if (data.ifs) {
+		var container = $(document.querySelectorAll('[data-uname~=lotdetailSaleinformationsaledatelabel]')).parent().hide();
+		var a = new Date(data.ad);
+		var tmpl = '<div class="details auction_date"><label>' + getTranslatedText("hepart_sale_date") + '</label><div><div><span class="col1 lot-details-desc padding-right sale-date">' + dateFormat(a, "ddd. mmm dS, yyyy h:MM TT") + '</span></div></div></div>';
+		container.after($(tmpl));
+	}
+
+	if (!isSellerRowDataAvailable && !isRepairCostDataAvailable && !isFinalPriceDataAvailable && !data.ifs) {
 		var container = $('#hepart_button');
 		var tmpl = "<span id='hepart_no_data'>" + getTranslatedText("hepart_no_data") + "</span>";
 		container.before($(tmpl));
 	}
 }
 
-var formatter = new Intl.NumberFormat('en-US', {
+var formatter1 = new Intl.NumberFormat('en-US', {
 	style: 'currency',
 	currency: 'USD',
 	minimumFractionDigits: 0,
@@ -79,36 +92,65 @@ var formatter = new Intl.NumberFormat('en-US', {
 
 chrome.extension.onMessage.addListener(
 	function (request, sender, sendResponse) {
-		/*if (request.action === "drawHepartBtn") {
+		if (request.action === "drawHepartBtn") {
 			var i = setInterval(
 				function () {
 					if ($('#email').length === 0) return;
 					clearInterval(i);
 					drawHepardButton();
 				}, 1000);
-		}*/
+		}
 		if (request.action === "drawDealers") {
 			var i = setInterval(
 				function () {
 					if ($('#serverSideDataTable tr').length === 0) return;
 					clearInterval(i);
-					markDealersOnTable('dealersList', '#serverSideDataTable tr');
+					console.log('LOADED');
+					if (!AppState.Opts.isNeedtoShowDealers) return;
+				 	listenMutations();
 				}, 2000);
-		}
-		if (request.action === "drawHepartBtn") {
-			var mutationsCallback = function (allmutations) {
-					mo.disconnect();
-					drawHepardButton();
-				},
-				mo = new MutationObserver(mutationsCallback),
-				options = {
-					'childList': true,
-					'attributeFilter': ['class']
-				}
-			mo.observe($('.inner-wrap')[0], options);
 		}
 	}
 );
+
+function listenMutations() {
+	var callback = function (allmutations) {
+		console.log('MUTATIONS');
+		markDealersOnTable('dealersList', '#serverSideDataTable tr');
+	},
+		mo = new MutationObserver(callback),
+		options = {
+			'attributeFilter': ['class'],
+			'childList': true,
+			'subtree': false,
+			'attributes': true
+		}
+	mo.observe($('#serverSideDataTable_paginate')[0], options);
+	markDealersOnTable('dealersList', '#serverSideDataTable tr');
+
+}
+
+/*
+Options start
+*/
+$(function () {
+	chrome.storage.local.get("isNeedtoShowDealers", function (item) {
+		if (chrome.runtime.lastError) {
+			console.log("Error retrieving entry: " + chrome.runtime.lastError);
+			return;
+		}
+		if (!_.isUndefined(item.isNeedtoShowDealers)) {
+			AppState.Opts.isNeedtoShowDealers = item.isNeedtoShowDealers;
+		} else {
+			AppState.Opts.isNeedtoShowDealers = true;
+		}
+	});
+});
+
+/*
+Options end
+*/
+
 
 function storeDataToDB(storageName, lotId) {
 	chrome.storage.local.get(storageName, function (obj) {
@@ -135,14 +177,39 @@ function putIntoStore(storageName, storedData) {
 }
 
 function markDealersOnTable(storageName, element) {
-	var selector = $(element);
 
+	if (!AppState.Opts.isNeedtoShowDealers) return;
+
+	var selector = $(element);
 	chrome.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (storedData) {
 			_.each(storedData, function (item) {
-				selector.find(' a[data-url="./lot/' + item + '"]').closest('tr').addClass('dealer');
+				selector.find('a[data-url="./lot/' + item + '"]').closest('tr').removeClass('dealer').addClass('dealer');
 			});
 		}
 	});
 }
+
+
+function findAndMarkForbiddenStates() {
+	var mainTable = $('#serverSideDataTable tr');
+	var doctypePosition = $('#serverSideDataTable th span.title:contains("Doc Type")')
+	var doctypeIndex = $('#serverSideDataTable th span.title').index(doctypePosition) || 0;
+	var stateColumn = mainTable.find('td:nth-child('+ (doctypeIndex - 1) +') a span');
+
+	$.each(stateColumn, function (idx, value) {
+		var el = $(value).text();
+		var isOnSearchPage = ['WI -', 'MI -', 'AL -', 'HI -', 'AK -'].find(function (state) {
+			return el.includes(state);
+		});
+		if (isOnSearchPage) {
+			mainTable.eq(idx - 1).removeClass('dealer').addClass('dealer')
+		}
+	});
+
+}
+
+
+
+
