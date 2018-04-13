@@ -34,5 +34,13 @@
     "o_saved": {
         "message": "Settings have been saved",
         "description": "Hepart"
+    },
+    "update_notification_title": {
+        "message": "Aloha! Hepart is here!",
+        "description": "Hepart"
+    },    
+    "update_notification_content": {
+        "message": "Just few small updates and improvements. Styling for automobiles from dealers has been changed. Everything is working as usual. Cheers!",
+        "description": "Hepart"
     }
 }

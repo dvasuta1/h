@@ -34,5 +34,13 @@
     "o_saved": {
         "message": "Настройки сохранены",
         "description": "Hepart"
+    },
+    "update_notification_title": {
+        "message": "Hepart вещает!",
+        "description": "Hepart"
+    },    
+    "update_notification_content": {
+        "message": "Я немножно обновился. Поменял стиль для дилеров на менее навязчивый. Да и еще помелочи улучшения. Все работает так же, как и работало. Ура!",
+        "description": "Hepart"
     }
 }
