@@ -5,7 +5,9 @@
 
 var AppState = {
 	Opts: {
-		isNeedtoShowDealers: true
+	 	isNeedtoShowDealers: true,
+		isNeedToHideCountriesFooter: true,
+		isNeedToHideAnnoyingFooter: false  
 	}
 };
 
@@ -26,12 +28,41 @@ function drawHepardButton() {
 		});
 }
 
-function getLotinfoById(callback) {
+function drawFavBtn() {
+	if ($('#hepart_fav_button').length != 0) return;
+
+	var d = document.createElement('span');
+	$(d).attr('id', 'hepart_fav_button')
+		.text('FAV')
+		.insertAfter($(".lot-vehicle-info"))
+		.click(function () {
+			$(this).addClass('active');
+			$(this).off('click');
+
+
+
+			var fav = {};
+			fav.img = $('#carouselcontainer a.active img.img-responsive').prop('src');
+			fav.title = $('h1.lot-vehicle-info').html().replace(/<\!--.*?-->/g, "").replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/,'');	
+			fav.lotId = getLotId();
+			fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/,'');
+			saveToFav(fav);
+		});
+}
+
+function saveToFav(item) {
+	console.log(item);
+}
+
+function getLotId(){
 	var url = window.location.href.replace(/\/$/, '');
-	var lotId = url.substr(url.lastIndexOf('/') + 1);
+	return url.substr(url.lastIndexOf('/') + 1);
+}
+
+function getLotinfoById(callback) {
 
 	if (lotId) {
-		$.get("https://www.copart.com/public/data/lotdetails/solr/" + lotId, function (data) {
+		$.get("https://www.copart.com/public/data/lotdetails/solr/" + getLotId(), function (data) {
 			if (data && data.data.lotDetails) {
 				callback && callback(data.data.lotDetails);
 			}
@@ -81,6 +112,7 @@ function insertTableRows(data) {
 		var tmpl = "<span id='hepart_no_data'>" + getTranslatedText("hepart_no_data") + "</span>";
 		container.before($(tmpl));
 	}
+
 }
 
 var formatter = new Intl.NumberFormat('en-US', {
@@ -98,6 +130,7 @@ browser.runtime.onMessage.addListener(
 					if ($('#email').length === 0) return;
 					clearInterval(i);
 					drawHepardButton();
+				 	drawFavBtn();
 				}, 1000);
 		}
 		if (request.action === "drawDealers") {
@@ -119,6 +152,7 @@ browser.runtime.onMessage.addListener(
 Options start
 */
 $(function () {
+
 	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
 	isNeedtoShowDealers.then(function (item) {
 		if (!_.isUndefined(item.isNeedtoShowDealers)) {
@@ -129,6 +163,31 @@ $(function () {
 	}, function (error) {
 		console.error(`Error: ${error}`);
 	});
+
+	var isNeedToHideCountriesFooter = browser.storage.local.get("isNeedToHideCountriesFooter");
+	isNeedToHideCountriesFooter.then(function (item) {
+		if (!_.isUndefined(item.isNeedToHideCountriesFooter)) {
+			AppState.Opts.isNeedToHideCountriesFooter = item.isNeedToHideCountriesFooter;
+		} else {
+			AppState.Opts.isNeedToHideCountriesFooter = true;
+		}
+	}, function (error) {
+		console.error(`Error: ${error}`);
+	});
+
+	var isNeedToHideAnnoyingFooter = browser.storage.local.get("isNeedToHideAnnoyingFooter");
+	isNeedToHideAnnoyingFooter.then(function (item) {
+		if (!_.isUndefined(item.isNeedToHideAnnoyingFooter)) {
+			AppState.Opts.isNeedToHideAnnoyingFooter = item.isNeedToHideAnnoyingFooter;
+		} else {
+			AppState.Opts.isNeedToHideAnnoyingFooter = true;
+		}
+	}, function (error) {
+		console.error(`Error: ${error}`);
+	});
+
+	console.log('AppState.Opts1', AppState.Opts);
+
 });
 
 /*
@@ -187,6 +246,11 @@ function listenMutations(){
 		'attributes': true
 	}	
 	mo.observe(document.getElementById('serverSideDataTable_paginate'), options);	
-	markDealersOnTable('dealersList', '#serverSideDataTable tr');
-	
+	markDealersOnTable('dealersList', '#serverSideDataTable tr');	
+}
+
+document.addEventListener('DOMContentLoaded', addFooterManipulations);
+
+function addFooterManipulations(){
+	console.log('AppState.Opts', AppState.Opts);
 }
