@@ -1,0 +1,89 @@
+.highlighticon {
+    width: 16px;
+    height: 16px
+}
+
+.vehicleicon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    overflow: hidden
+}
+
+.lotIcon-CARB {
+    margin: -17px 0 0 -17px
+}
+
+.lotIcon-CERT-D {
+    margin: -17px 0 0 -65px
+}
+
+.lotIcon-CERT-S {
+    margin: -17px 0 0 -116px
+}
+
+.lotIcon-DONA {
+    margin: -17px 0 0 -166px
+}
+
+.lotIcon-FAST {
+    margin: -17px 0 0 -215px
+}
+
+.lotIcon-FEATURED {
+    margin: -66px 0 0 -17px
+}
+
+.lotIcon-HYD {
+    margin: -66px 0 0 -65px
+}
+
+.lotIcon-OFS {
+    margin: -66px 0 0 -117px
+}
+
+.lotIcon-SBR {
+    margin: -66px 0 0 -166px
+}
+
+.lotIcon-SC {
+    margin: -66px 0 0 -215px
+}
+
+.lotIcon-SITE-CT {
+    margin: -117px 0 0 -17px
+}
+
+.lotIcon-CERT-E {
+    margin: -117px 0 0 -65px
+}
+
+.lotIcon-VIX {
+    margin: -117px 0 0 -116px
+}
+
+.lotIcon-SITE-DR {
+    margin: -117px 0 0 -166px
+}
+
+.lotIcon-DVAA {
+    margin: -19px 0 0 -218px
+}
+
+.lotIcon-FAST {
+    margin: -119px 0 0 -213px
+}
+
+.removeBookmark {
+    cursor: pointer;
+    text-decoration: underline;
+    color: initial;
+}
+
+.hidden {
+    display: none;
+}
+
+#noBookmarks {
+    padding-bottom: 10px; 
+} 

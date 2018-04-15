@@ -21,7 +21,7 @@
             "19": "img/ext_icons/ic_bus_articulated_front_black_18dp.png",
             "38": "img/ext_icons/ic_bus_articulated_front_black_48dp.png"
         },
-        "default_title": "__MSG_extName__",
+        "default_title": "Open Boo",
         "browser_style": true
     },
     "background": {

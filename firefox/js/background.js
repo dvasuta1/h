@@ -4,7 +4,7 @@ browser.runtime.onInstalled.addListener(function (details) {
     // good place to set default options
     function setDefaults(callback) {
         storage.area.get(function (stored_options) {
-            var default_options = storage.default_options,  
+            var default_options = storage.default_options,
                 option,
                 new_options = {};
             for (option in default_options) {
@@ -27,14 +27,14 @@ browser.runtime.onInstalled.addListener(function (details) {
         });
 
     }
-
-    browser.notifications.create({
+    //on update notification
+    /*browser.notifications.create({
         "type": "basic",
         "iconUrl": browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
-        "title":  browser.i18n.getMessage('update_notification_title'),
+        "title": browser.i18n.getMessage('update_notification_title'),
         "message": browser.i18n.getMessage('update_notification_content')
-      });
-
+    });
+*/
     switch (details.reason) {
         case 'install':
             browser.storage.local.clear();
@@ -53,8 +53,6 @@ browser.runtime.onInstalled.addListener(function (details) {
 });
 
 browser.runtime.onUpdateAvailable.addListener(function (details) {
-    // when an update is available - reload extension
-    // update will be install immediately
     browser.runtime.reload();
 });
 
@@ -76,5 +74,63 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         browser.tabs.sendMessage(tabId, {
             action: action
         });
+    }
+});
+
+
+browser.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        console.log(request);
+        if (request.type == "bookmarkAdded") {
+            createBasicNotification({
+                type: request.type,
+                title: request.type,
+                message: request.message
+            });
+        }
+
+    });
+
+function createBasicNotification(params) {
+    var opt = {
+        type: "basic",
+        title: params.title,
+        message: params.message,
+        iconUrl: browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
+    }
+    browser.notifications.create(params.type, opt);
+    setTimeout(function () {
+        browser.notifications.clear(params.type).then(() => {
+            console.log("cleared");
+        });
+    }, 3000);
+}
+
+
+browser.storage.onChanged.addListener(function (changes, namespace) {
+    for (key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+            'Old value was "%s", new value is "%s".',
+            key,
+            namespace,
+            storageChange.oldValue,
+            storageChange.newValue);
+    }
+});
+
+
+browser.browserAction.onClicked.addListener(function () {
+    var creating = browser.tabs.create({
+        url: "bookmarks.html"
+    });
+    creating.then(onCreated, onError);
+
+    function onCreated(tab) {
+        console.log(`Created new tab: ${tab.id}`)
+    }
+
+    function onError(error) {
+        console.log(`Error: ${error}`);
     }
 });
