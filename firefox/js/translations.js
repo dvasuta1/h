@@ -23,6 +23,10 @@ var domTranslations = {
 		"hepart_no_data": {
 			"message": "Ничего нового:(",
 			"description": "Final price"
+		},
+		"bookmarks_page_title": {
+			"message": "Hepart Закладки2",
+			"description": "Hepart"
 		}
 	},
 	en: {

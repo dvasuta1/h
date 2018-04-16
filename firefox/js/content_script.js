@@ -114,6 +114,9 @@ browser.runtime.onMessage.addListener(
 					//markDealersOnTable('dealersList', '#serverSideDataTable tr');					
 				}, 2000);
 		}
+		if (request.action === "addToBookmarks") {
+			addToBookmarks();
+		}	
 	}
 );
 
@@ -123,6 +126,8 @@ Options start
 */
 
 $(function () {
+
+	$('<div id="showbtn"></div>').appendTo('.footer.footer .footer-top .row:first-child');
 
 	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
 	isNeedtoShowDealers.then(function (item) {
@@ -206,9 +211,9 @@ function markDealersOnTable(storageName, element) {
 
 function listenMutations() {
 	var callback = function (allmutations) {
-			console.log('MUTATIONS');
-			markDealersOnTable('dealersList', '#serverSideDataTable tr');
-		},
+		console.log('MUTATIONS');
+		markDealersOnTable('dealersList', '#serverSideDataTable tr');
+	},
 		mo = new MutationObserver(callback),
 		options = {
 			'attributeFilter': ['class'],
@@ -242,24 +247,30 @@ function drawFavBtn() {
 			$(this).addClass('active');
 			$(this).off('click');
 			//imgUlr.substr(imgUrl.lastIndexOf('/') + 1);
-			var lotTitle = $('h1.lot-vehicle-info').html()
-				.replaceAll('../images/global/highlightIcons-us.png', 'img/highlightIcons-us.png')
-				.replace(/<\!--.*?-->/g, "")
-				.replace(/[\n\r]+/g, ' ')
-				.replace(/\s{2,}/g, ' ')
-				.replace(/^\s+|\s+$/, '');
-			var fav = {};
-			fav.img = $('#carouselcontainer a.active img.img-responsive').prop('src');
-			fav.title = lotTitle;
-			fav.lotId = getLotId();
-			fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/, '');
-			storeBookmarkToDB('bookmark_' + fav.lotId, fav);
+			addToBookmarks();
 		});
 }
 
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
+function addToBookmarks() {
+	var lotTitle = $('h1.lot-vehicle-info').html()
+		.replaceAll('../images/global/highlightIcons-us.png', 'img/highlightIcons-us.png')
+		.replace(/<\!--.*?-->/g, "")
+		.replace(/[\n\r]+/g, ' ')
+		.replace(/\s{2,}/g, ' ')
+		.replace(/^\s+|\s+$/, '');
+	var fav = {};
+	fav.img = $('#carouselcontainer a.active img.img-responsive').prop('src');
+	fav.title = lotTitle;
+	fav.cleanTitle = $('h1.lot-vehicle-info .title').text();
+	fav.lotId = getLotId();
+	fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/, '');
+	storeBookmarkToDB('bookmark_' + fav.lotId, fav);
+}
+
+
+String.prototype.replaceAll = function (search, replacement) {
+	var target = this;
+	return target.replace(new RegExp(search, 'g'), replacement);
 };
 
 function storeBookmarkToDB(storageName, data) {
@@ -267,17 +278,19 @@ function storeBookmarkToDB(storageName, data) {
 	browser.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
-			putIntoStore(storageName, JSON.stringify(data), addBookmarkNotification);
+			console.log('data', data);
+			putIntoStore(storageName, JSON.stringify(data), addBookmarkNotification(data));
 		}
 	});
 }
 
-function addBookmarkNotification() {
+function addBookmarkNotification(data) {
 	console.debug('addBookmarkNotification');
 	chrome.runtime.sendMessage({
-		type: "bookmarkAdded",
-		title: "hello",
-		message: "everyone"
+		id: "bookmarkAdded",
+		title: chrome.i18n.getMessage("notification_bookmark_added_title"),
+		message: chrome.i18n.getMessage("notification_bookmark_added_message", data.cleanTitle),
+		iconUrl: data.img
 	});
 }
 

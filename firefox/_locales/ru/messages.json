@@ -42,5 +42,9 @@
     "update_notification_content": {
         "message": "Я немножно обновился. Поменял стиль для дилеров на менее навязчивый. Да и еще помелочи улучшения. Все работает так же, как и работало. Ура!",
         "description": "Hepart"
+    },
+    "bookmarks_page_title": {
+        "message": "Hepart Закладки",
+        "description": "Hepart"
     }
 }

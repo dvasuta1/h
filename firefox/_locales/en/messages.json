@@ -38,9 +38,63 @@
     "update_notification_title": {
         "message": "Aloha! Hepart is here!",
         "description": "Hepart"
-    },    
+    },
     "update_notification_content": {
         "message": "Just few small updates and improvements. Styling for automobiles from dealers has been changed. Everything is working as usual. Cheers!",
         "description": "Hepart"
+    },
+    "contextMenuItemAddToBookmarks": {
+        "message": "Add to Bookmarks",
+        "description": "Hepart"
+    },
+    "contextMenuItemGoToBookmarks": {
+        "message": "Go to Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_page_title": {
+        "message": "Hepart Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_my_bookmarks": {
+        "message": "Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_no_bookmarks": {
+        "message": "No bookmarks yet!",
+        "description": "Hepart"
+    },
+    "bookmarks_lotid": {
+        "message": "Lot ID",
+        "description": "Hepart"
+    },
+    "bookmarks_vehicle": {
+        "message": "Vehicle",
+        "description": "Hepart"
+    },
+    "bookmarks_photo": {
+        "message": "Photo",
+        "description": "Hepart"
+    },
+    "bookmarks_saledate": {
+        "message": "Sale date",
+        "description": "Hepart"
+    },
+    "general_remove": {
+        "message": "Remove",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_title": {
+        "message": "New bookmark",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_message": {
+        "message": "Vehicle $NAME$ has been saved to bookmarks",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
     }
 }

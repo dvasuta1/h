@@ -87,3 +87,6 @@
 #noBookmarks {
     padding-bottom: 10px; 
 } 
+a {
+    color: rgb(0, 0, 238);
+}

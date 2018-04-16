@@ -75,3 +75,17 @@
 	background: url('../img/ext_icons/diagonal-noise.png') repeat, 
 	#BDBDBD !important; 
 }
+
+#showbtn {
+	position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    top: 10px;
+    left: 10px;
+}
+
+footer.footer .footer-top .row {
+	position: relative;
+}
+/* col-sm-12 */

@@ -81,11 +81,12 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 browser.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log(request);
-        if (request.type == "bookmarkAdded") {
+        if (request.id == "bookmarkAdded") {
             createBasicNotification({
-                type: request.type,
-                title: request.type,
-                message: request.message
+                title: request.title,
+                message: request.message,
+                iconUrl: request.iconUrl,
+                id: request.id
             });
         }
 
@@ -94,16 +95,16 @@ browser.runtime.onMessage.addListener(
 function createBasicNotification(params) {
     var opt = {
         type: "basic",
-        title: params.title,
-        message: params.message,
-        iconUrl: browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
+        title: params.title || "",
+        message: params.message || "",
+        iconUrl: params.iconUrl || browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
     }
-    browser.notifications.create(params.type, opt);
+    browser.notifications.create(params.id, opt);
     setTimeout(function () {
-        browser.notifications.clear(params.type).then(() => {
+        browser.notifications.clear(params.id).then(() => {
             console.log("cleared");
         });
-    }, 3000);
+    }, 5000);
 }
 
 
@@ -133,4 +134,45 @@ browser.browserAction.onClicked.addListener(function () {
     function onError(error) {
         console.log(`Error: ${error}`);
     }
+});
+
+browser.contextMenus.create({
+    id: "addToBookmarks",
+    title: browser.i18n.getMessage("contextMenuItemAddToBookmarks"),
+    documentUrlPatterns: ["https://www.copart.com/lot/*", "https://www.copart.com/ru/lot/*"],
+    contexts: ["all"]
+}, onMenuItemCreated);
+
+browser.contextMenus.create({
+    id: "goToBookmarks",
+    title: browser.i18n.getMessage("contextMenuItemGoToBookmarks"),
+    command: "_execute_browser_action",
+    documentUrlPatterns: ["https://www.copart.com/*"],
+    contexts: ["all"]
+}, onMenuItemCreated);
+
+function onMenuItemCreated() {
+    if (browser.runtime.lastError) {
+        console.log("error creating item:" + browser.runtime.lastError);
+    } else {
+        console.log("item created successfully");
+    }
+}
+
+browser.contextMenus.onClicked.addListener(function (info, tab) {
+    if (info.menuItemId == "addToBookmarks") {
+        browser.tabs.sendMessage(tab.id, {
+            action: 'addToBookmarks'
+        });
+    }
+    /*else if (info.menuItemId == "goToBookmarks") {
+           var creating = browser.tabs.create({
+               url: "bookmarks.html"
+           });
+           creating.then((tab) => {
+               console.log(`Created new tab: ${tab.id}`)
+           }, (error) => {
+               console.log(`Error: ${error}`);
+           });
+       }*/
 });

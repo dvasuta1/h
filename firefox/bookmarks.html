@@ -9,8 +9,8 @@
 
 <body>
   <div id="demo">
-    <h1>My bookmarks</h1>
-    <h2>Table of my other Material Design works (list was updated 08.2015)</h2>
+    <h1>{{bookmarks_my_bookmarks}}</h1>
+    <!--h2>Table of my other Material Design works (list was updated 08.2015)</h2-->
 
     <!-- Responsive table starts here -->
     <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
@@ -19,18 +19,19 @@
       <table id="table" class="table table-hover table-mc-light-blue">
         <thead>
           <tr>
-            <th>Lot ID</th>
-            <th>Name</th>
-            <th>Photo</th>  
-            <th>Sale Date</th>
+            <th>{{bookmarks_lotid}}</th>
+            <th>{{bookmarks_vehicle}}</th>
+            <th>{{bookmarks_photo}}</th>  
+            <th>{{bookmarks_saledate}}</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>          
       </table>
-      <h2 id='noBookmarks' class="hidden">No bookmarks yet!</h2> 
+      <h2 id='noBookmarks' class="hidden">{{bookmarks_no_bookmarks}}</h2> 
     </div>  
   </div>
+  <script src="js/helpers/localizer.js"></script>
   <script src="lib/jquery.min.js"></script>
   <script src="js/bookmarks.js"></script>
 </body>
