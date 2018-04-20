@@ -1,3 +1,6 @@
+#demo {
+    max-width: 1000px;
+}
 .highlighticon {
     width: 16px;
     height: 16px
@@ -76,8 +79,11 @@
 
 .removeBookmark {
     cursor: pointer;
-    text-decoration: underline;
-    color: initial;
+    padding: 0.5rem;
+    background: red;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
 }
 
 .hidden {
@@ -89,4 +95,11 @@
 } 
 a {
     color: rgb(0, 0, 238);
+}
+.saleDate {
+    font-size: 1.3rem;
+    font-weight: 300;
+}
+#table td span.title {
+    font-weight: 500;
 }

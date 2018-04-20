@@ -89,7 +89,10 @@ browser.runtime.onMessage.addListener(
                 id: request.id
             });
         }
-
+        /*if (request.id == "goToBookmarks") {
+            console.log('goToBookmarks');
+            openBookmarksPage();
+        }*/
     });
 
 function createBasicNotification(params) {
@@ -120,7 +123,7 @@ browser.storage.onChanged.addListener(function (changes, namespace) {
     }
 });
 
-
+/*
 browser.browserAction.onClicked.addListener(function () {
     var creating = browser.tabs.create({
         url: "bookmarks.html"
@@ -135,6 +138,22 @@ browser.browserAction.onClicked.addListener(function () {
         console.log(`Error: ${error}`);
     }
 });
+*/
+
+function openBookmarksPage() {
+    var creating = browser.tabs.create({
+        url: browser.i18n.getMessage("linkto_bookmarks")
+    });
+    creating.then(onCreated, onError);
+
+    function onCreated(tab) {
+        console.log(`Created new tab: ${tab.id}`)
+    }
+
+    function onError(error) {
+        console.log(`Error: ${error}`);
+    }
+}
 
 browser.contextMenus.create({
     id: "addToBookmarks",
@@ -146,7 +165,6 @@ browser.contextMenus.create({
 browser.contextMenus.create({
     id: "goToBookmarks",
     title: browser.i18n.getMessage("contextMenuItemGoToBookmarks"),
-    command: "_execute_browser_action",
     documentUrlPatterns: ["https://www.copart.com/*"],
     contexts: ["all"]
 }, onMenuItemCreated);
@@ -165,14 +183,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
             action: 'addToBookmarks'
         });
     }
-    /*else if (info.menuItemId == "goToBookmarks") {
-           var creating = browser.tabs.create({
-               url: "bookmarks.html"
-           });
-           creating.then((tab) => {
-               console.log(`Created new tab: ${tab.id}`)
-           }, (error) => {
-               console.log(`Error: ${error}`);
-           });
-       }*/
+    else if (info.menuItemId == "goToBookmarks") {
+        openBookmarksPage();
+    }
 });

@@ -96,5 +96,13 @@
                 "example": "Cira"
             }
         }
-    }
+    },
+    "linkto_bookmarks": {
+        "message": "pages/en/bookmarks.html",
+        "description": "Hepart"
+    },
+    "o_hide_countries_footer": {
+        "message": "Hide countries footer",
+        "description": "Hepart"
+    }    
 }

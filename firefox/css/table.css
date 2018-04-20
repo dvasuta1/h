@@ -28,7 +28,7 @@ html {
     margin: 16px;
     padding: 0;
     min-height: 100%;
-    font-size: 50%;
+    font-size: 66.5%;
 }
 
 body {
@@ -411,7 +411,7 @@ body {
 
 .table-hover.table-mc-light-blue>tbody>tr:hover>td,
 .table-hover.table-mc-light-blue>tbody>tr:hover>th {
-    background-color: #b3e5fc;
+    background-color: #eee;
 }
 
 @media screen and (max-width: 767px) {
@@ -427,7 +427,7 @@ body {
         background-color: #fff;
     }
     .table-responsive-vertical .table-hover.table-mc-light-blue>tbody>tr>td:hover {
-        background-color: #b3e5fc;
+        background-color: #eee;
     }
 }
 

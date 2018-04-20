@@ -38,5 +38,9 @@
     "update_notification_content": {
         "message": "Я трiшки оновився. Поміняв стиль для дилерів на менш нав'язливий, та і ще дещо відремонтував. Все працює так само, як і працювало. Ура!",
         "description": "Hepart"
+    },
+    "linkto_bookmarks": {
+        "message": "pages/ua/bookmarks.html",
+        "description": "Hepart"
     }
 }

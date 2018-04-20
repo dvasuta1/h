@@ -111,7 +111,6 @@ browser.runtime.onMessage.addListener(
 					clearInterval(i);
 					console.log('LOADED');
 					listenMutations();
-					//markDealersOnTable('dealersList', '#serverSideDataTable tr');					
 				}, 2000);
 		}
 		if (request.action === "addToBookmarks") {
@@ -128,6 +127,18 @@ Options start
 $(function () {
 
 	$('<div id="showbtn"></div>').appendTo('.footer.footer .footer-top .row:first-child');
+
+	$('ul.navbar-nav').append(`<li><a href="#" class="menu_click goToBookmarks">Bookmarks</a></li>`)
+
+	document.addEventListener('DOMContentLoaded', function () {
+		$(document).on('click', '.goToBookmarks', function (e) {
+			e.preventDefault();
+			console.log('click!');
+			chrome.runtime.sendMessage({
+				id: "goToBookmarks"
+			});
+		});
+	});
 
 	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
 	isNeedtoShowDealers.then(function (item) {
@@ -253,7 +264,7 @@ function drawFavBtn() {
 
 function addToBookmarks() {
 	var lotTitle = $('h1.lot-vehicle-info').html()
-		.replaceAll('../images/global/highlightIcons-us.png', 'img/highlightIcons-us.png')
+		.replaceAll('../images/global/highlightIcons-us.png', '../../img/highlightIcons-us.png')
 		.replace(/<\!--.*?-->/g, "")
 		.replace(/[\n\r]+/g, ' ')
 		.replace(/\s{2,}/g, ' ')

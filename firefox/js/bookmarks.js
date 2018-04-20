@@ -27,7 +27,7 @@ function renderBookmarkTable() {
                     <img src=${item.img}>
                 </a>
             </td>
-            <td data-title="${chrome.i18n.getMessage('bookmarks_saledate')}">${item.saleDate}</td>
+            <td data-title="${chrome.i18n.getMessage('bookmarks_saledate')}" class='saleDate'>${item.saleDate}</td>
             <td><span id="bookmark_${item.lotId}" class="removeBookmark">${chrome.i18n.getMessage('general_remove')}</span></td>`;
         };
 

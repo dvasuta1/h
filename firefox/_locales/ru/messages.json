@@ -44,7 +44,61 @@
         "description": "Hepart"
     },
     "bookmarks_page_title": {
-        "message": "Hepart Закладки",
+        "message": "Hepart - Закладки",
+        "description": "Hepart"
+    },
+    "contextMenuItemAddToBookmarks": {
+        "message": "Добавить в закладки",
+        "description": "Hepart"
+    },
+    "contextMenuItemGoToBookmarks": {
+        "message": "Перейти в закладки",
+        "description": "Hepart"
+    },
+    "bookmarks_my_bookmarks": {
+        "message": "Закладки",
+        "description": "Hepart"
+    },
+    "bookmarks_no_bookmarks": {
+        "message": "Здесь пока что пусто",
+        "description": "Hepart"
+    },
+    "bookmarks_lotid": {
+        "message": "Лот",
+        "description": "Hepart"
+    },
+    "bookmarks_vehicle": {
+        "message": "Авто",
+        "description": "Hepart"
+    },
+    "bookmarks_photo": {
+        "message": "Фото",
+        "description": "Hepart"
+    },
+    "bookmarks_saledate": {
+        "message": "Дата продажи",
+        "description": "Hepart"
+    },
+    "general_remove": {
+        "message": "Удалить",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_title": {
+        "message": "Новая закладка",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_message": {
+        "message": "Лот $NAME$ был добавлен в закладки!",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "linkto_bookmarks": {
+        "message": "pages/ru/bookmarks.html",
         "description": "Hepart"
     }
 }
