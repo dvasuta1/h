@@ -37,6 +37,7 @@ browser.runtime.onInstalled.addListener(function (details) {
 */
     switch (details.reason) {
         case 'install':
+            console.log('install');
             browser.storage.local.clear();
             browser.storage.local.set({
                 isNeedtoShowDealers: true,
@@ -45,6 +46,17 @@ browser.runtime.onInstalled.addListener(function (details) {
             });
             break;
         case 'update':
+            console.log('update');
+            var creating = browser.tabs.create({
+                url: "https://www.facebook.com/hepart/posts/581511342215035"
+            });
+            creating
+                .then((tab) => {
+                    console.log(`Created new tab: ${tab.id}`);
+                })
+                .catch((error) => {
+                    console.log(`Error: ${error}`)
+                });
             setDefaults();
             break;
         default:
@@ -100,9 +112,10 @@ function createBasicNotification(params) {
         type: "basic",
         title: params.title || "",
         message: params.message || "",
-        iconUrl: params.iconUrl || browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
-    }
+        iconUrl: params.iconUrl || browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png")
+    };
     browser.notifications.create(params.id, opt);
+
     setTimeout(function () {
         browser.notifications.clear(params.id).then(() => {
             console.log("cleared");
@@ -182,8 +195,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
         browser.tabs.sendMessage(tab.id, {
             action: 'addToBookmarks'
         });
-    }
-    else if (info.menuItemId == "goToBookmarks") {
+    } else if (info.menuItemId == "goToBookmarks") {
         openBookmarksPage();
     }
 });

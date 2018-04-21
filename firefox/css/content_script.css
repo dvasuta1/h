@@ -78,14 +78,17 @@
 
 #showbtn {
 	position: absolute;
-    width: 20px;
-    height: 20px;
-    background: red;
+    width: 26px;
+    height: 26px;
     top: 10px;
-    left: 10px;
+	left: 10px;
+	background: url('../img/ext_icons/eye-outline.png') no-repeat;
+	border: 1px solid white;
+}
+#showbtn.off {
+	background: url('../img/ext_icons/eye-off-outline.png') no-repeat;
 }
 
 footer.footer .footer-top .row {
 	position: relative;
 }
-/* col-sm-12 */

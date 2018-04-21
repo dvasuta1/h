@@ -12,9 +12,13 @@
         "description": "Run button"
     },
     "hepart_sale_date": {
-        "message": "Sale Date:",
+        "message": "Est. Sale Date (may be changed):",
         "description": "Run button"
     },
+    "hepart_show_footer": {
+        "message": "Show footer",
+        "description": "Run button"
+    },    
     "o_page_title": {
         "message": "Settings",
         "description": "Hepart"
@@ -24,9 +28,17 @@
         "description": "Hepart"
     },
     "o_show_found_dealers": {
-        "message": "Display previously found dealer cars on the search page",
+        "message": "Show previously found dealer cars on the search page",
         "description": "Hepart"
     },
+    "o_hide_countries_list": {
+        "message": "Hide 'Copart International Locations' section in footer",
+        "description": "Hepart"
+    },    
+    "o_hide_footer": {
+        "message": "Hide blue bottom menu in footer",
+        "description": "Hepart"
+    }, 
     "o_save": {
         "message": "Save",
         "description": "Hepart"

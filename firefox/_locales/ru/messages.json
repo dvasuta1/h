@@ -12,9 +12,13 @@
         "description": "Run button"
     },
     "hepart_sale_date": {
-        "message": "Дата продажи:",
+        "message": "Вероятная дата продажи (но это не точно):",
         "description": "Run button"
     },
+    "hepart_show_footer": {
+        "message": "Показать футер",
+        "description": "Run button"
+    },   
     "o_page_title": {
         "message": "Настройки",
         "description": "Hepart"
@@ -27,6 +31,14 @@
         "message": "Отображать ранее найденные автомобили дилеров на странице поиска",
         "description": "Hepart"
     },
+    "o_hide_countries_list": {
+        "message": "Скрывать секцию 'Copart International Locations'",
+        "description": "Hepart"
+    },    
+    "o_hide_footer": {
+        "message": "Скрывать нижнее меню навигации",
+        "description": "Hepart"
+    },  
     "o_save": {
         "message": "Сохранить",
         "description": "Hepart"

@@ -3,13 +3,56 @@
 //TODO:
 //All this fucking crap must be refactored in next major version
 
-var AppState = {
-	Opts: {
-		isNeedtoShowDealers: true,
-		isNeedToHideCountriesFooter: true,
-		isNeedToHideAnnoyingFooter: false
-	}
-};
+var Opts = {};
+var preferences = browser.storage.local.get(["isNeedtoShowDealers", "isNeedToHideCountriesFooter", "isNeedToHideAnnoyingFooter"]);
+preferences
+	.then((prefs) => {
+		Opts.isNeedtoShowDealers = prefs.isNeedtoShowDealers;
+		Opts.isNeedToHideCountriesFooter = prefs.isNeedToHideCountriesFooter;
+		Opts.isNeedToHideAnnoyingFooter = prefs.isNeedToHideAnnoyingFooter;
+
+		if (Opts.isNeedToHideAnnoyingFooter) {
+			$('.footer.footer .footer-mid').addClass('hidden');
+			$(function () {
+				$(`<div id="showbtn" title="getTranslatedText("hepart_show_footer")"></div>`).appendTo('.footer.footer .footer-top .row:first-child');
+			});
+			$(document).on('click', '#showbtn', function (e) {
+				$('.footer.footer .footer-mid').toggleClass('hidden');
+				$('#showbtn').toggleClass('off');
+				window.scrollTo(0,document.body.scrollHeight);
+			});
+		}
+
+		if (Opts.isNeedToHideCountriesFooter) {
+			$('.footer-bottom.footer-btm').addClass('hidden');
+		}
+
+		browser.runtime.onMessage.addListener(
+			function (request, sender, sendResponse) {
+				if (request.action === "drawHepartBtn") {
+					var i = setInterval(
+						function () {
+							if ($('#email').length === 0) return;
+							clearInterval(i);
+							drawHepardButton();
+						}, 1000);
+				}
+				if (request.action === "drawDealers" && Opts.isNeedtoShowDealers) {
+					var i = setInterval(
+						function () {
+							if ($('#serverSideDataTable tr').length === 0) return;
+							clearInterval(i);
+							console.log('LOADED');
+							listenMutations();
+						}, 2000);
+				}
+				if (request.action === "addToBookmarks") {
+					addToBookmarks();
+				}
+			}
+		);
+	})
+	.catch((error) => console.error(`Error: ${error}`));
 
 function drawHepardButton() {
 	if ($('#hepart_button').length != 0) return;
@@ -93,88 +136,16 @@ var formatter = new Intl.NumberFormat('en-US', {
 	maximumFractionDigits: 0
 });
 
-browser.runtime.onMessage.addListener(
-	function (request, sender, sendResponse) {
-		if (request.action === "drawHepartBtn") {
-			var i = setInterval(
-				function () {
-					if ($('#email').length === 0) return;
-					clearInterval(i);
-					drawHepardButton();
-					drawFavBtn();
-				}, 1000);
-		}
-		if (request.action === "drawDealers") {
-			var i = setInterval(
-				function () {
-					if ($('#serverSideDataTable tr').length === 0) return;
-					clearInterval(i);
-					console.log('LOADED');
-					listenMutations();
-				}, 2000);
-		}
-		if (request.action === "addToBookmarks") {
-			addToBookmarks();
-		}	
-	}
-);
-
 
 /*
 Options start
 */
-
+/*
 $(function () {
-
-	$('<div id="showbtn"></div>').appendTo('.footer.footer .footer-top .row:first-child');
-
+	
 	$('ul.navbar-nav').append(`<li><a href="#" class="menu_click goToBookmarks">Bookmarks</a></li>`)
-
-	document.addEventListener('DOMContentLoaded', function () {
-		$(document).on('click', '.goToBookmarks', function (e) {
-			e.preventDefault();
-			console.log('click!');
-			chrome.runtime.sendMessage({
-				id: "goToBookmarks"
-			});
-		});
-	});
-
-	var isNeedtoShowDealers = browser.storage.local.get("isNeedtoShowDealers");
-	isNeedtoShowDealers.then(function (item) {
-		if (!_.isUndefined(item.isNeedtoShowDealers)) {
-			AppState.Opts.isNeedtoShowDealers = item.isNeedtoShowDealers;
-		} else {
-			AppState.Opts.isNeedtoShowDealers = true;
-		}
-	}, function (error) {
-		console.error(`Error: ${error}`);
-	});
-
-	var isNeedToHideCountriesFooter = browser.storage.local.get("isNeedToHideCountriesFooter");
-	isNeedToHideCountriesFooter.then(function (item) {
-		if (!_.isUndefined(item.isNeedToHideCountriesFooter)) {
-			AppState.Opts.isNeedToHideCountriesFooter = item.isNeedToHideCountriesFooter;
-		} else {
-			AppState.Opts.isNeedToHideCountriesFooter = true;
-		}
-	}, function (error) {
-		console.error(`Error: ${error}`);
-	});
-
-	var isNeedToHideAnnoyingFooter = browser.storage.local.get("isNeedToHideAnnoyingFooter");
-	isNeedToHideAnnoyingFooter.then(function (item) {
-		if (!_.isUndefined(item.isNeedToHideAnnoyingFooter)) {
-			AppState.Opts.isNeedToHideAnnoyingFooter = item.isNeedToHideAnnoyingFooter;
-		} else {
-			AppState.Opts.isNeedToHideAnnoyingFooter = true;
-		}
-	}, function (error) {
-		console.error(`Error: ${error}`);
-	});
-
 });
-
+*/
 /*
 Options end
 */
@@ -207,8 +178,7 @@ function putIntoStore(storageName, storedData, callback) {
 
 function markDealersOnTable(storageName, element) {
 
-	if (!AppState.Opts.isNeedtoShowDealers) return;
-
+	if (!Opts.isNeedtoShowDealers) return;
 	var selector = $(element);
 	browser.storage.local.get(storageName, function (obj) {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
@@ -222,9 +192,9 @@ function markDealersOnTable(storageName, element) {
 
 function listenMutations() {
 	var callback = function (allmutations) {
-		console.log('MUTATIONS');
-		markDealersOnTable('dealersList', '#serverSideDataTable tr');
-	},
+			console.log('MUTATIONS');
+			markDealersOnTable('dealersList', '#serverSideDataTable tr');
+		},
 		mo = new MutationObserver(callback),
 		options = {
 			'attributeFilter': ['class'],
@@ -235,13 +205,6 @@ function listenMutations() {
 	mo.observe(document.getElementById('serverSideDataTable_paginate'), options);
 	markDealersOnTable('dealersList', '#serverSideDataTable tr');
 }
-
-// document.addEventListener('DOMContentLoaded', addFooterManipulations);
-
-// function addFooterManipulations(){
-// 	console.log('AppState.Opts', AppState.Opts);
-// }
-
 
 /**
  * Boolmarks start
@@ -257,7 +220,6 @@ function drawFavBtn() {
 		.click(function () {
 			$(this).addClass('active');
 			$(this).off('click');
-			//imgUlr.substr(imgUrl.lastIndexOf('/') + 1);
 			addToBookmarks();
 		});
 }
