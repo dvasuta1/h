@@ -14,6 +14,20 @@
 	vertical-align: middle;
 	margin-right: 4px;
 }
+#hepart_fav_button {
+	color: white;
+    border-radius: 4px;
+	padding: 2px 8px;
+	height: 24px;
+	display: inline-block;
+    position: relative;
+	white-space: nowrap;
+	cursor: pointer;
+	background: green;
+	vertical-align: middle;
+	margin-left: 10px;
+	margin-bottom: 2px;
+}
 #hepart_button:hover {
 	background: linear-gradient(60deg, orange, orangered);
 }
@@ -60,4 +74,21 @@
 #serverSideDataTable.dataTable  tr.forbiddenState {
 	background: url('../img/ext_icons/diagonal-noise.png') repeat, 
 	#BDBDBD !important; 
+}
+
+#showbtn {
+	position: absolute;
+    width: 26px;
+    height: 26px;
+    top: 10px;
+	left: 10px;
+	background: url('../img/ext_icons/eye-outline.png') no-repeat;
+	border: 1px solid white;
+}
+#showbtn.off {
+	background: url('../img/ext_icons/eye-off-outline.png') no-repeat;
+}
+
+footer.footer .footer-top .row {
+	position: relative;
 }

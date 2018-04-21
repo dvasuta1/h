@@ -12,9 +12,13 @@
         "description": "Run button"
     },
     "hepart_sale_date": {
-        "message": "Sale Date:",
+        "message": "Est. Sale Date (may be changed):",
         "description": "Run button"
     },
+    "hepart_show_footer": {
+        "message": "Show footer",
+        "description": "Run button"
+    },    
     "o_page_title": {
         "message": "Settings",
         "description": "Hepart"
@@ -24,9 +28,17 @@
         "description": "Hepart"
     },
     "o_show_found_dealers": {
-        "message": "Display previously found dealer cars on the search page",
+        "message": "Show previously found dealer cars on the search page",
         "description": "Hepart"
     },
+    "o_hide_countries_list": {
+        "message": "Hide 'Copart International Locations' section in footer",
+        "description": "Hepart"
+    },    
+    "o_hide_footer": {
+        "message": "Hide blue bottom menu in footer",
+        "description": "Hepart"
+    }, 
     "o_save": {
         "message": "Save",
         "description": "Hepart"
@@ -38,9 +50,71 @@
     "update_notification_title": {
         "message": "Aloha! Hepart is here!",
         "description": "Hepart"
-    },    
+    },
     "update_notification_content": {
         "message": "Just few small updates and improvements. Styling for automobiles from dealers has been changed. Everything is working as usual. Cheers!",
         "description": "Hepart"
-    }
+    },
+    "contextMenuItemAddToBookmarks": {
+        "message": "Add to Bookmarks",
+        "description": "Hepart"
+    },
+    "contextMenuItemGoToBookmarks": {
+        "message": "Go to Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_page_title": {
+        "message": "Hepart Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_my_bookmarks": {
+        "message": "Bookmarks",
+        "description": "Hepart"
+    },
+    "bookmarks_no_bookmarks": {
+        "message": "No bookmarks yet!",
+        "description": "Hepart"
+    },
+    "bookmarks_lotid": {
+        "message": "Lot ID",
+        "description": "Hepart"
+    },
+    "bookmarks_vehicle": {
+        "message": "Vehicle",
+        "description": "Hepart"
+    },
+    "bookmarks_photo": {
+        "message": "Photo",
+        "description": "Hepart"
+    },
+    "bookmarks_saledate": {
+        "message": "Sale date",
+        "description": "Hepart"
+    },
+    "general_remove": {
+        "message": "Remove",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_title": {
+        "message": "New bookmark",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_message": {
+        "message": "Vehicle $NAME$ has been saved to bookmarks",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "linkto_bookmarks": {
+        "message": "pages/en/bookmarks.html",
+        "description": "Hepart"
+    },
+    "o_hide_countries_footer": {
+        "message": "Hide countries footer",
+        "description": "Hepart"
+    }    
 }

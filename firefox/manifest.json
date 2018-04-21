@@ -2,7 +2,7 @@
     "name": "__MSG_extName__",
     "description": "__MSG_extDescr__",
     "short_name": "__MSG_extName__",
-    "version": "0.1.7.3",
+    "version": "0.1.8",
     "manifest_version": 2,
     "default_locale": "en",
     "icons": {
@@ -21,7 +21,7 @@
             "19": "img/ext_icons/ic_bus_articulated_front_black_18dp.png",
             "38": "img/ext_icons/ic_bus_articulated_front_black_48dp.png"
         },
-        "default_title": "__MSG_extName__",
+        "default_title": "Open Bookmarks",
         "browser_style": true
     },
     "background": {
@@ -59,6 +59,7 @@
         "activeTab",
         "storage",
         "tabs",
-        "notifications"
+        "notifications",
+        "contextMenus"
     ]
 }
