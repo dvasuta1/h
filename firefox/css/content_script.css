@@ -92,3 +92,7 @@
 footer.footer .footer-top .row {
 	position: relative;
 }
+
+#menuitemsGoToBookmarks, #menuitemsAddToBookmarks {
+	color: yellow;
+}

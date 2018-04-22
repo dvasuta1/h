@@ -56,6 +56,7 @@ preferences
 
 function drawHepardButton() {
 	if ($('#hepart_button').length != 0) return;
+	drawBookmarkButtons();
 
 	var d = document.createElement('span');
 	$(d).attr('id', 'hepart_button')
@@ -67,7 +68,7 @@ function drawHepardButton() {
 		.click(function () {
 			$(this).addClass('active');
 			$(this).off('click');
-			getLotinfoById(insertTableRows);
+			getLotinfoById();
 		});
 }
 
@@ -76,16 +77,19 @@ function getLotId() {
 	return url.substr(url.lastIndexOf('/') + 1);
 }
 
-function getLotinfoById(callback) {
+function getLotinfoById() {
 	var lotId = getLotId();
 	if (lotId) {
-		$.get("https://www.copart.com/public/data/lotdetails/solr/" + lotId, function (data) {
-			if (data && data.data.lotDetails) {
-				callback && callback(data.data.lotDetails);
-			}
-		}, "json");
+		 fetch("https://www.copart.com/public/data/lotdetails/solr/" + lotId)
+		 .then((response) => {
+			 return response.json();
+ 		 })
+		 .then((data) => {
+			data && data.data.lotDetails && insertTableRows(data.data.lotDetails);
+		 })
+		 .catch((error) => console.error(`Error: ${error}`));
 	} else {
-		console.debug('Wrong lot id', lotId);
+		throw new Error('Wrong lot id!');
 	}
 }
 
@@ -135,20 +139,6 @@ var formatter = new Intl.NumberFormat('en-US', {
 	minimumFractionDigits: 0,
 	maximumFractionDigits: 0
 });
-
-
-/*
-Options start
-*/
-/*
-$(function () {
-	
-	$('ul.navbar-nav').append(`<li><a href="#" class="menu_click goToBookmarks">Bookmarks</a></li>`)
-});
-*/
-/*
-Options end
-*/
 
 function storeDataToDB(storageName, lotId) {
 	browser.storage.local.get(storageName, function (obj) {
@@ -267,4 +257,17 @@ function addBookmarkNotification(data) {
 	});
 }
 
+function drawBookmarkButtons(){
+	console.log('drawBookmarkButtons');
+	$('.nav.navbar-nav').append(`<li><a class="menu_click" href="#" id='menuitemsGoToBookmarks'>Go to Bookmarks</a></li><li><a class="menu_click" href="#" id='menuitemsAddToBookmarks'>Add to Bookmarks</a></li>`);
+}
+
+$(document).on('click', '#menuitemsGoToBookmarks', function (e) {
+	chrome.runtime.sendMessage({
+		id: "goToBookmarks"
+	});
+});
+$(document).on('click', '#menuitemsAddToBookmarks', function (e) {
+	addToBookmarks();
+});
 /* Boormarks end */
