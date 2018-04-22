@@ -27,14 +27,7 @@ browser.runtime.onInstalled.addListener(function (details) {
         });
 
     }
-    //on update notification
-    /*browser.notifications.create({
-        "type": "basic",
-        "iconUrl": browser.extension.getURL("img/ext_icons/ic_bus_articulated_front_black_48dp.png"),
-        "title": browser.i18n.getMessage('update_notification_title'),
-        "message": browser.i18n.getMessage('update_notification_content')
-    });
-*/
+
     switch (details.reason) {
         case 'install':
             console.log('install');
@@ -47,16 +40,16 @@ browser.runtime.onInstalled.addListener(function (details) {
             break;
         case 'update':
             console.log('update');
-            var creating = browser.tabs.create({
-                url: "https://www.facebook.com/hepart/posts/581511342215035"
-            });
-            creating
-                .then((tab) => {
-                    console.log(`Created new tab: ${tab.id}`);
-                })
-                .catch((error) => {
-                    console.log(`Error: ${error}`)
-                });
+            /* var creating = browser.tabs.create({
+                 url: "https://www.facebook.com/hepart/posts/581511342215035"
+             });
+             creating
+                 .then((tab) => {
+                     console.log(`Created new tab: ${tab.id}`);
+                 })
+                 .catch((error) => {
+                     console.log(`Error: ${error}`)
+                 }); */
             setDefaults();
             break;
         default:
@@ -89,7 +82,6 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
 });
 
-
 browser.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log(request);
@@ -101,10 +93,10 @@ browser.runtime.onMessage.addListener(
                 id: request.id
             });
         }
-        /*if (request.id == "goToBookmarks") {
+        if (request.id == "goToBookmarks") {
             console.log('goToBookmarks');
             openBookmarksPage();
-        }*/
+        }
     });
 
 function createBasicNotification(params) {
@@ -122,7 +114,6 @@ function createBasicNotification(params) {
         });
     }, 5000);
 }
-
 
 browser.storage.onChanged.addListener(function (changes, namespace) {
     for (key in changes) {

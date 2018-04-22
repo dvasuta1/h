@@ -14,11 +14,26 @@
 	vertical-align: middle;
 	margin-right: 4px;
 }
+#hepart_fav_button {
+	color: white;
+    border-radius: 4px;
+	padding: 2px 8px;
+	height: 24px;
+	display: inline-block;
+    position: relative;
+	white-space: nowrap;
+	cursor: pointer;
+	background: green;
+	vertical-align: middle;
+	margin-left: 10px;
+	margin-bottom: 2px;
+}
 #hepart_button:hover {
 	background: linear-gradient(60deg, orange, orangered);
 }
 #hepart_button::before {
-    background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/ic_bus_articulated_front_black_18dp.png') no-repeat transparent;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/ic_bus_articulated_front_black_18dp.png') no-repeat transparent;
+
 	background-size: contain;
 	background-size: 100%;
     background-position: center;
@@ -53,12 +68,28 @@
 	background-color: orange;
 }
 #serverSideDataTable.dataTable  tr.dealer {
-	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/dealer_high.png') , 
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/dealer_high.png') no-repeat center center, 
 		url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/diagonal-noise.png') repeat, 
-		linear-gradient(to top, #F2C14E, #F78154) repeat 0 0 !important; 
-	background-position: center center !important;
+		linear-gradient(to top, rgb(248, 219, 153), rgb(252, 189, 164)) repeat 0 0 !important; 
 }
 #serverSideDataTable.dataTable  tr.forbiddenState {
 	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/diagonal-noise.png') repeat, 
 	#BDBDBD !important; 
+}
+
+#showbtn {
+	position: absolute;
+    width: 26px;
+    height: 26px;
+    top: 10px;
+	left: 10px;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/eye-outline.png') no-repeat;
+	border: 1px solid white;
+}
+#showbtn.off {
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/eye-off-outline.png') no-repeat;
+}
+
+footer.footer .footer-top .row {
+	position: relative;
 }
