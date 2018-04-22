@@ -40,16 +40,16 @@ browser.runtime.onInstalled.addListener(function (details) {
             break;
         case 'update':
             console.log('update');
-            /* var creating = browser.tabs.create({
-                 url: "https://www.facebook.com/hepart/posts/581511342215035"
-             });
-             creating
-                 .then((tab) => {
-                     console.log(`Created new tab: ${tab.id}`);
-                 })
-                 .catch((error) => {
-                     console.log(`Error: ${error}`)
-                 }); */
+            var creating = browser.tabs.create({
+                url: "https://www.facebook.com/hepart/posts/581511342215035"
+            });
+            creating
+                .then((tab) => {
+                    console.log(`Created new tab: ${tab.id}`);
+                })
+                .catch((error) => {
+                    console.log(`Error: ${error}`)
+                });
             setDefaults();
             break;
         default:

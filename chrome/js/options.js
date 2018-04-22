@@ -16,7 +16,7 @@ function save_options() {
   }
   
  function restore_options() {
-  browser.storage.local.get({
+  chrome.storage.local.get({
         isNeedtoShowDealers: true,
         isNeedToHideCountriesFooter: true,
         isNeedToHideAnnoyingFooter: false
@@ -30,9 +30,4 @@ function save_options() {
   $('#save').on('click', save_options);
 
 
-  // lotsearchSaletitletype  
-  // ST - AL, 
-  //CT - WI
-  // - MI
-  // - AK
-  // HI
+  ga('send', 'pageview', '/options.html');

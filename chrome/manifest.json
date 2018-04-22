@@ -2,7 +2,7 @@
     "name": "__MSG_extName__",
     "description": "__MSG_extDescr__",
     "short_name": "__MSG_extName__",
-    "version": "0.1.7.2",
+    "version": "0.1.8.1",
     "manifest_version": 2,
     "minimum_chrome_version": "42", 
     "default_locale": "en", 
@@ -25,6 +25,7 @@
         "scripts": ["lib/browser-polyfill.min.js", "js/storage.js", "js/background.js"],
         "persistent": false
     },
+    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 
     "content_scripts": [
         {
