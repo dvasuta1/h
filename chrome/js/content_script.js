@@ -4,9 +4,7 @@
 //All this fucking crap must be refactored in next major version
 
 var Opts = {};
-var preferences = browser.storage.local.get(["isNeedtoShowDealers", "isNeedToHideCountriesFooter", "isNeedToHideAnnoyingFooter"]);
-preferences
-	.then((prefs) => {
+chrome.storage.local.get(["isNeedtoShowDealers", "isNeedToHideCountriesFooter", "isNeedToHideAnnoyingFooter"], (prefs) => {
 		Opts.isNeedtoShowDealers = prefs.isNeedtoShowDealers;
 		Opts.isNeedToHideCountriesFooter = prefs.isNeedToHideCountriesFooter;
 		Opts.isNeedToHideAnnoyingFooter = prefs.isNeedToHideAnnoyingFooter;
@@ -51,8 +49,7 @@ preferences
 				}
 			}
 		);
-	})
-	.catch((error) => console.error(`Error: ${error}`));
+	});
 
 function drawHepardButton() {
 	if ($('#hepart_button').length != 0) return;
@@ -106,6 +103,10 @@ function insertTableRows(data) {
 		container.prepend($(tmpl));
 		if (data.std.toLowerCase().indexOf('dealer') !== -1) {
 			storeDataToDB('dealersList', data.lotNumberStr);
+			chrome.runtime.sendMessage({
+				id: "saveDealerItemToGA",
+				lotId: data.lotNumberStr
+			});
 		}
 	}
 	if (data.rc) {
@@ -140,7 +141,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 function storeDataToDB(storageName, lotId) {
-	browser.storage.local.get(storageName).then((obj) => {
+	chrome.storage.local.get(storageName, (obj) => {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
 			var d = JSON.stringify(new Array(lotId));
@@ -150,7 +151,7 @@ function storeDataToDB(storageName, lotId) {
 			storedData = JSON.stringify(storedData);
 			putIntoStore(storageName, storedData);
 		}
-	}).catch((error) => console.error(`Error: ${error}`));
+	});
 
 }
 
@@ -158,12 +159,12 @@ function putIntoStore(storageName, storedData, callback) {
 	console.debug('putIntoStore');
 	var dataToStore = {};
 	dataToStore[storageName] = storedData;
-	browser.storage.local.set(dataToStore).then(() => {
+	chrome.storage.local.set(dataToStore, () => {
 		if (chrome.runtime.lastError) {
 			console.error("Runtime error.");
 		}
 		callback && callback();
-	}).catch((error) => console.error(`Error: ${error}`));
+	});
 
 }
 
@@ -171,14 +172,14 @@ function markDealersOnTable(storageName, element) {
 
 	if (!Opts.isNeedtoShowDealers) return;
 	var selector = $(element);
-	browser.storage.local.get(storageName).then((obj) => {
+	chrome.storage.local.get(storageName, (obj) => {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (storedData) {
 			_.each(storedData, function (item) {
 				selector.find('a[data-url="./lot/' + item + '"]').closest('tr').removeClass('dealer').addClass('dealer');
 			});
 		}
-	}).catch((error) => console.error(`Error: ${error}`));
+	});
 
 }
 
@@ -240,13 +241,13 @@ String.prototype.replaceAll = function (search, replacement) {
 
 function storeBookmarkToDB(storageName, data) {
 	console.debug('storeBookmarkToDB');
-	browser.storage.local.get(storageName).then((obj) => {
+	chrome.storage.local.get(storageName, (obj) => {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
 			console.log('data', data);
 			putIntoStore(storageName, JSON.stringify(data), addBookmarkNotification(data));
 		}
-	}).catch((error) => console.error(`Error: ${error}`));;
+	});
 }
 
 function addBookmarkNotification(data) {
@@ -261,13 +262,3 @@ function addBookmarkNotification(data) {
 
 /* Boormarks end */
 
-
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-117936283-1', 'auto');  // Replace with your property ID.
-ga('send', 'pageview');
-ga('set', 'checkProtocolTask', function(){});
-ga('require', 'displayfeatures');

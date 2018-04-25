@@ -2,6 +2,9 @@ function save_options() {
     var isNeedtoShowDealers = $('#showDealersInSearchPage').prop('checked');
     var isNeedToHideCountriesFooter = $('#hideCountriesFooter').prop('checked');
     var isNeedToHideAnnoyingFooter = $('#hideAnnoyingFooter').prop('checked');
+    analytics('hepart.send', 'event', 'options', 'buttonsState', 'showDealersInSearchPage', Number(isNeedtoShowDealers));
+    analytics('hepart.send', 'event', 'options', 'buttonsState', 'hideCountriesFooter',  Number(isNeedToHideCountriesFooter));
+    analytics('hepart.send', 'event', 'options', 'buttonsState', 'hideAnnoyingFooter',  Number(isNeedToHideAnnoyingFooter));
     chrome.storage.local.set({
         isNeedtoShowDealers: isNeedtoShowDealers,
         isNeedToHideCountriesFooter: isNeedToHideCountriesFooter,
@@ -30,4 +33,4 @@ function save_options() {
   $('#save').on('click', save_options);
 
 
-  ga('send', 'pageview', '/options.html');
+  analytics('send', 'pageview', 'options.html');

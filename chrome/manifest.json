@@ -22,10 +22,9 @@
     },
 
     "background": {
-        "scripts": ["lib/browser-polyfill.min.js", "js/storage.js", "js/background.js"],
+        "scripts": ["js/ga.js", "js/storage.js", "js/background.js"],
         "persistent": false
     },
-    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 
     "content_scripts": [
         {
@@ -36,15 +35,17 @@
                 "css/content_script.css"
             ],
             "js": [
+                "js/ga.js",
                 "js/jquery.min.js",
                 "js/underscore-min.js",
-                "lib/browser-polyfill.min.js",
                 "lib/date.format.js",
                 "js/translations.js",
                 "js/content_script.js"
             ]
         }
     ],
+    "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+
     "options_ui": {
         "page": "options.html",
         "chrome_style": true

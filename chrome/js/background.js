@@ -3,18 +3,18 @@
 chrome.runtime.onInstalled.addListener(function (details) {
     // good place to set default options
     function setDefaults(callback) {
-        storage.area.get({}).then((stored_options) => {
+        storage.area.get(function (stored_options) {
             var default_options = storage.default_options,
                 option,
-                new_options = {};
+                new_options = {};   
             for (option in default_options) {
                 if (!stored_options.hasOwnProperty(option)) {
-                    new_options[option] = default_options[option];  
+                    new_options[option] = default_options[option];
                 }
             }
             if (Object.keys(new_options).length !== 0) {
                 // save to area if new default options is appeared
-                storage.area.set(new_options).then(() => {
+                storage.area.set(new_options, function () {
                     if (typeof callback === 'function') {
                         callback();
                     }
@@ -30,8 +30,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
     switch (details.reason) {
         case 'install':
             console.log('install');
-            browser.storage.local.clear();
-            browser.storage.local.set({
+            chrome.storage.local.clear();
+            chrome.storage.local.set({
                 isNeedtoShowDealers: true,
                 isNeedToHideCountriesFooter: true,
                 isNeedToHideAnnoyingFooter: false
@@ -39,16 +39,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
             break;
         case 'update':
             console.log('update');
-            /* var creating = browser.tabs.create({
+            /*chrome.tabs.create({
                  url: "https://www.facebook.com/hepart/posts/581511342215035"
-             });
-             creating
-                 .then((tab) => {
-                     console.log(`Created new tab: ${tab.id}`);
-                 })
-                 .catch((error) => {
-                     console.log(`Error: ${error}`)
-                 }); */
+             }); */
             setDefaults();
             break;
         default:
@@ -69,6 +62,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     if (changeInfo.status == 'complete') {
         if (isOnLotPage) {
+            analytics('hepart.send', 'event', 'main', 'drawHepartBtn');
             action = 'drawHepartBtn';
         } else if (isOnSearchPage) {
             action = 'drawDealers';
@@ -86,17 +80,17 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log(request);
         if (request.id == "bookmarkAdded") {
-            createBasicNotification({   
+            createBasicNotification({
                 title: request.title,
                 message: request.message,
                 iconUrl: request.iconUrl,
                 id: request.id
             });
         }
-        /*if (request.id == "goToBookmarks") {
-            console.log('goToBookmarks');
-            openBookmarksPage();
-        }*/
+        if (request.id == "saveDealerItemToGA") {
+            console.log('request.lotId', request.lotId);
+            analytics('hepart.send', 'event', 'lot', 'storeDealerLot', request.lotId);
+        }
     });
 
 function createBasicNotification(params) {
@@ -109,14 +103,14 @@ function createBasicNotification(params) {
     chrome.notifications.create(params.id, opt);
 
     setTimeout(function () {
-        browser.notifications.clear(params.id).then(() => {
+        chrome.notifications.clear(params.id, () => {
             console.log("cleared");
         });
     }, 5000);
 }
 
-
-browser.storage.onChanged.addListener(function (changes, namespace) {
+/*
+chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (key in changes) {
         var storageChange = changes[key];
         console.log('Storage key "%s" in namespace "%s" changed. ' +
@@ -127,31 +121,30 @@ browser.storage.onChanged.addListener(function (changes, namespace) {
             storageChange.newValue);
     }
 });
-
+*/
 function openBookmarksPage() {
-    var creating = browser.tabs.create({
+    var creating = chrome.tabs.create({
         url: chrome.i18n.getMessage("linkto_bookmarks")
-    });
-    creating.then(onCreated, onError);
+    }, () => onCreated);
 
-    function onCreated(tab) {
-        console.log(`Created new tab: ${tab.id}`)
-    }
-
-    function onError(error) {
-        console.log(`Error: ${error}`);
+    function onCreated() {
+        if (chrome.runtime.lastError) {
+            console.log("linkto_bookmarks:" + chrome.runtime.lastError);
+        } else {
+            console.log("linkto_bookmarks created successfully");
+        }
     }
 }
 
-browser.contextMenus.create({
+chrome.contextMenus.create({
     id: "addToBookmarks",
     title: chrome.i18n.getMessage("contextMenuItemAddToBookmarks"),
     documentUrlPatterns: ["https://www.copart.com/lot/*", "https://www.copart.com/ru/lot/*"],
     contexts: ["all"]
 }, onMenuItemCreated);
 
-browser.contextMenus.create({
-    id: "goToBookmarks",
+chrome.contextMenus.create({
+    id: "toBookmarks",
     title: chrome.i18n.getMessage("contextMenuItemGoToBookmarks"),
     documentUrlPatterns: ["https://www.copart.com/*"],
     contexts: ["all"]
@@ -165,12 +158,42 @@ function onMenuItemCreated() {
     }
 }
 
-browser.contextMenus.onClicked.addListener(function (info, tab) {
+chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId == "addToBookmarks") {
-        browser.tabs.sendMessage(tab.id, {
+        analytics('hepart.send', 'event', 'bookmarks', 'add');
+        chrome.tabs.sendMessage(tab.id, {
             action: 'addToBookmarks'
         });
-    } else if (info.menuItemId == "goToBookmarks") {
+    } else if (info.menuItemId == "toBookmarks") {
+        analytics('hepart.send', 'event', 'bookmarks', 'goto');
         openBookmarksPage();
     }
 });
+
+
+
+// (function (i, s, o, g, r, a, m) {
+//     i['GoogleAnalyticsObject'] = r;
+//     i[r] = i[r] || function () {
+//         (i[r].q = i[r].q || []).push(arguments)
+//     }, i[r].l = 1 * new Date();
+//     a = s.createElement(o),
+//         m = s.getElementsByTagName(o)[0];
+//     a.async = 1;
+//     a.src = g;
+//     m.parentNode.insertBefore(a, m)
+// })(window, document, 'script', 'https://www.google-analytics.com/analytics_debug.js', 'analytics');
+
+// analytics('create', 'UA-117936283-1', 'auto', 'hepart'); // Replace with your property ID.
+// analytics('hepart.send', 'pageview');
+// analytics('hepart.set', 'checkProtocolTask', function () {});
+// analytics('hepart.require', 'displayfeatures');
+// analytics('hepart.set', 'dimension1', chrome.runtime.getManifest().version);
+
+// analytics(function (tracker) {
+//     console.log(tracker);   
+// });
+
+// analytics(function () {
+//     console.log(analytics.getByName('hepart'));
+// });

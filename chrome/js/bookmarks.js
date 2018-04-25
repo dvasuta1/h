@@ -1,13 +1,13 @@
 function renderBookmarkTable() {
-    browser.storage.local.get().then(results => {
-         var bookmarks = [];
+    chrome.storage.local.get(results => {
+        var bookmarks = [];
         Object.keys(results).forEach(function (key) {
             if (key.includes('bookmark_')) {
                 bookmarks.push(JSON.parse(results[key]));
             }
         });
-        return bookmarks;
-    }).then(bookmarks => drawBookmarkTable(bookmarks));
+        return drawBookmarkTable(bookmarks);
+    });
 
     function drawBookmarkTable(data) {
         if (data.length === 0) {
@@ -45,8 +45,10 @@ renderBookmarkTable();
 document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '.removeBookmark', function (e) {
         if (e.currentTarget.id) {
-            var removeItem = browser.storage.local.remove(e.currentTarget.id);
-            removeItem.then(() => renderBookmarkTable());
+            analytics('hepart.send', 'event', 'bookmarks', 'remove');
+            chrome.storage.local.remove(e.currentTarget.id, renderBookmarkTable);
         }
     });
 });
+
+analytics('hepart.send', 'pageview', 'bookmarks.html');
