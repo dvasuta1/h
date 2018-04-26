@@ -62,13 +62,13 @@ function getTranslatedText(key) {
 	var getLang = function () {
 		return getCookie('userLang') || 'en';
 	};
-
-	var text = browser.i18n.getMessage(key);
+	var text = '';
 	var lang = getLang();
 	var storedTranslations = domTranslations[lang];
 	if (storedTranslations[key] && storedTranslations[key].message) {
 		text = storedTranslations[key].message;
+	} else {
+		text = browser.i18n.getMessage(key);
 	}
 	return text;
-
 }

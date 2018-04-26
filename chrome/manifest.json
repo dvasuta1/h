@@ -2,7 +2,7 @@
     "name": "__MSG_extName__",
     "description": "__MSG_extDescr__",
     "short_name": "__MSG_extName__",
-    "version": "0.1.7",
+    "version": "0.1.8.2",
     "manifest_version": 2,
     "minimum_chrome_version": "42", 
     "default_locale": "en", 
@@ -17,21 +17,35 @@
             "19": "img/ext_icons/ic_bus_articulated_front_black_18dp.png",
             "38": "img/ext_icons/ic_bus_articulated_front_black_48dp.png"
         },
-        "default_title": "__MSG_extName__"
+        "default_title": "__MSG_extName__",
+        "chrome_style": true
     },
 
     "background": {
-        "scripts": ["js/storage.js", "js/background.js"],
+        "scripts": ["js/ga.js", "js/storage.js", "js/background.js"],
         "persistent": false
     },
 
     "content_scripts": [
         {
-            "matches": ["https://www.copart.com/*"],
-            "css": ["css/content_script.css"],
-            "js": ["js/jquery.min.js", "js/underscore-min.js", "js/translations.js", "js/content_script.js"]
+            "matches": [
+                "https://*.copart.com/*"
+            ],
+            "css": [
+                "css/content_script.css"
+            ],
+            "js": [
+                "js/ga.js",
+                "js/jquery.min.js",
+                "js/underscore-min.js",
+                "lib/date.format.js",
+                "js/translations.js",
+                "js/content_script.js"
+            ]
         }
     ],
+    "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+
     "options_ui": {
         "page": "options.html",
         "chrome_style": true
@@ -41,9 +55,11 @@
       "img/*"
     ],  
     "permissions": [
-        "https://www.copart.com/*",
+        "https://*.copart.com/*",
         "activeTab",
         "storage",
-        "tabs"
+        "tabs",
+        "notifications",
+        "contextMenus"
     ]
 }

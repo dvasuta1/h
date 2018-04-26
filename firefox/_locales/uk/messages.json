@@ -1,6 +1,6 @@
 {
     "extName": {
-        "message": "Hepart",
+        "message": "Hepart Mega",
         "description": "Ім'я додатку. Не перекладати"
     },
     "extDescr": {
@@ -8,9 +8,13 @@
         "description": "Короткий опис додатку"
     },
     "hepart_sale_date": {
-        "message": "Sale Date:",
+        "message": "Вероятная дата продажи (но это не точно):",
         "description": "Run button"
     },
+    "hepart_show_footer": {
+        "message": "Показать футер",
+        "description": "Run button"
+    }, 
     "o_page_title": {
         "message": "Hepart",
         "description": "Hepart"
@@ -23,6 +27,14 @@
         "message": "Відображати вже знайдені автомобілі дилерів на сторінці пошуку",
         "description": "Hepart"
     },
+    "o_hide_countries_list": {
+        "message": "Не показувати секцiю 'Copart International Locations'",
+        "description": "Hepart"
+    },    
+    "o_hide_footer": {
+        "message": "Не показувати нижнє меню навігації",
+        "description": "Hepart"
+    }, 
     "o_save": {
         "message": "Зберегти",
         "description": "Hepart"
@@ -30,5 +42,71 @@
     "o_saved": {
         "message": "Налаштування збережено",
         "description": "Hepart"
+    },
+    "update_notification_title": {
+        "message": "Це Hepart!",
+        "description": "Hepart"
+    },    
+    "update_notification_content": {
+        "message": "Я трiшки оновився. Поміняв стиль для дилерів на менш нав'язливий, та і ще дещо відремонтував. Все працює так само, як і працювало. Ура!",
+        "description": "Hepart"
+    },
+    "linkto_bookmarks": {
+        "message": "pages/ua/bookmarks.html",
+        "description": "Hepart"
+    },
+    "bookmarks_page_title": {
+        "message": "Hepart - Закладки",
+        "description": "Hepart"
+    },
+    "contextMenuItemAddToBookmarks": {
+        "message": "Додати до закладок",
+        "description": "Hepart"
+    },
+    "contextMenuItemGoToBookmarks": {
+        "message": "Перейти до закладок",
+        "description": "Hepart"
+    },
+    "bookmarks_my_bookmarks": {
+        "message": "Закладки",
+        "description": "Hepart"
+    },
+    "bookmarks_no_bookmarks": {
+        "message": "Тут, поки що, пусто. Добавте хоча б одну закладку",
+        "description": "Hepart"
+    },
+    "bookmarks_lotid": {
+        "message": "Лот",
+        "description": "Hepart"
+    },
+    "bookmarks_vehicle": {
+        "message": "Авто",
+        "description": "Hepart"
+    },
+    "bookmarks_photo": {
+        "message": "Фото",
+        "description": "Hepart"
+    },
+    "bookmarks_saledate": {
+        "message": "Дата продажу",
+        "description": "Hepart"
+    },
+    "general_remove": {
+        "message": "Видалити",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_title": {
+        "message": "Нова закладка",
+        "description": "Hepart"
+    },
+    "notification_bookmark_added_message": {
+        "message": "Лот $NAME$ був доданий до закладок!",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
     }
 }
