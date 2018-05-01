@@ -8,7 +8,7 @@
     a.async = 1;
     a.src = g;
     m.parentNode.insertBefore(a, m)
-})(window, document, 'script', 'https://www.google-analytics.com/analytics_debug.js', 'analytics');
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'analytics');
 
 analytics('create', 'UA-117936283-1', 'auto', 'hepart'); // Replace with your property ID.
 analytics('hepart.send', 'pageview');

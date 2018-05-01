@@ -39,9 +39,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
             break;
         case 'update':
             console.log('update');
-            /*chrome.tabs.create({
-                 url: "https://www.facebook.com/hepart/posts/581511342215035"
-             }); */
+             chrome.tabs.create({
+                 url: "https://www.facebook.com/hepart/posts/583662778666558"
+             }); 
             setDefaults();
             break;
         default:
@@ -62,7 +62,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     if (changeInfo.status == 'complete') {
         if (isOnLotPage) {
-            analytics('hepart.send', 'event', 'main', 'drawHepartBtn');
+            //analytics('hepart.send', 'event', 'main', 'drawHepartBtn');
             action = 'drawHepartBtn';
         } else if (isOnSearchPage) {
             action = 'drawDealers';
@@ -172,28 +172,20 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
 
 
-// (function (i, s, o, g, r, a, m) {
-//     i['GoogleAnalyticsObject'] = r;
-//     i[r] = i[r] || function () {
-//         (i[r].q = i[r].q || []).push(arguments)
-//     }, i[r].l = 1 * new Date();
-//     a = s.createElement(o),
-//         m = s.getElementsByTagName(o)[0];
-//     a.async = 1;
-//     a.src = g;
-//     m.parentNode.insertBefore(a, m)
-// })(window, document, 'script', 'https://www.google-analytics.com/analytics_debug.js', 'analytics');
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'analytics');
 
-// analytics('create', 'UA-117936283-1', 'auto', 'hepart'); // Replace with your property ID.
-// analytics('hepart.send', 'pageview');
-// analytics('hepart.set', 'checkProtocolTask', function () {});
-// analytics('hepart.require', 'displayfeatures');
+analytics('create', 'UA-117936283-1', 'auto', 'hepart'); // Replace with your property ID.
+analytics('hepart.send', 'pageview');
+analytics('hepart.set', 'checkProtocolTask', function () {});
+analytics('hepart.require', 'displayfeatures');
 // analytics('hepart.set', 'dimension1', chrome.runtime.getManifest().version);
-
-// analytics(function (tracker) {
-//     console.log(tracker);   
-// });
-
-// analytics(function () {
-//     console.log(analytics.getByName('hepart'));
-// });

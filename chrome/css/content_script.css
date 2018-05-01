@@ -65,10 +65,10 @@
 	padding: 1px 3px;
 	margin-right:10px;
 	color:white;
-	background-color: orange;
+	background-color: orange;	
 }
 #serverSideDataTable.dataTable  tr.dealer {
-	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/dealer_high.png') no-repeat center center, 
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/dealer_high.png') 110px center repeat , 
 		url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/diagonal-noise.png') repeat, 
 		linear-gradient(to top, rgb(248, 219, 153), rgb(252, 189, 164)) repeat 0 0 !important; 
 }
