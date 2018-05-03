@@ -91,6 +91,24 @@
         "message": "Sale date",
         "description": "Hepart"
     },
+    "bookmarks_alert": {
+        "message": "Reminder",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval": {
+        "message": "Please set correct time delay in hh:mm, not zeroes",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval_in_future": {
+        "message": "There's an error in reminder time set. It's set to $NAME$ which has already passed.",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
     "general_remove": {
         "message": "Remove",
         "description": "Hepart"
@@ -99,8 +117,22 @@
         "message": "New bookmark",
         "description": "Hepart"
     },
+    "notification_bookmark_alert_title": {
+        "message": "ATTENTION! Auction is comming!",
+        "description": "Hepart"
+    },
     "notification_bookmark_added_message": {
         "message": "Vehicle $NAME$ has been saved to bookmarks",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "notification_bookmark_clickme": {
+        "message": "$NAME$. Click me to check",
         "description": "Hepart",
         "placeholders": {
             "name": {

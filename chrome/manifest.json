@@ -22,7 +22,7 @@
     },
 
     "background": {
-        "scripts": ["js/ga.js", "js/storage.js", "js/background.js"],
+        "scripts": ["js/ga.js", "js/underscore-min.js", "js/storage.js", "js/background.js"],
         "persistent": false
     },
 
@@ -39,6 +39,7 @@
                 "js/jquery.min.js",
                 "js/underscore-min.js",
                 "lib/date.format.js",
+                "lib/moment.min.js",
                 "js/translations.js",
                 "js/content_script.js"
             ]
@@ -60,6 +61,7 @@
         "storage",
         "tabs",
         "notifications",
-        "contextMenus"
+        "contextMenus",
+        "alarms"
     ]
 }

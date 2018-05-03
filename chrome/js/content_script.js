@@ -160,7 +160,7 @@ function putIntoStore(storageName, storedData, callback) {
 	var dataToStore = {};
 	dataToStore[storageName] = storedData;
 	chrome.storage.local.set(dataToStore, () => {
-		if (chrome.runtime.lastError) {
+		if (chrome.extension.lastError) {
 			console.error("Runtime error.");
 		}
 		callback && callback();
@@ -230,6 +230,8 @@ function addToBookmarks() {
 	fav.cleanTitle = $('h1.lot-vehicle-info .title').text();
 	fav.lotId = getLotId();
 	fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/, '');
+	var saleDateNoTZ = moment(fav.saleDate.replace(' EEST', '')); 
+	fav.saleDateNoTZ = saleDateNoTZ.unix() * 1000;
 	storeBookmarkToDB('bookmark_' + fav.lotId, fav);
 }
 

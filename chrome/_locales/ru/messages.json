@@ -91,8 +91,30 @@
         "message": "Дата продажи",
         "description": "Hepart"
     },
+    "bookmarks_alert": {
+        "message": "Напоминание",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval": {
+        "message": "Сначала установите временной интервал в часах и минутах. Просто нули тоже не надо ставить",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval_in_future": {
+        "message": "Ошибка установки времени. Напоминание указывает на уже прошедший момент времени, который был $NAME$ !",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
     "general_remove": {
         "message": "Удалить",
+        "description": "Hepart"
+    },
+    "notification_bookmark_alert_title": {
+        "message": "Не пропустите аукцион!",
         "description": "Hepart"
     },
     "notification_bookmark_added_title": {
@@ -101,6 +123,16 @@
     },
     "notification_bookmark_added_message": {
         "message": "Лот $NAME$ был добавлен в закладки!",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "notification_bookmark_clickme": {
+        "message": "$NAME$. Счелкните здесь для перехода к лоту",
         "description": "Hepart",
         "placeholders": {
             "name": {
