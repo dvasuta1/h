@@ -29,7 +29,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
     switch (details.reason) {
         case 'install':
-            console.log('install');
+            console.info('install');
             chrome.storage.local.clear();
             chrome.storage.local.set({
                 isNeedtoShowDealers: true,
@@ -38,7 +38,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
             });
             break;
         case 'update':
-            console.log('update');
+            console.info('update');
             /*chrome.tabs.create({
                 url: "https://www.facebook.com/hepart/posts/583662778666558"
             }); */
@@ -75,7 +75,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
 });
 
-
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.id == "bookmarkAdded") {
@@ -86,13 +85,20 @@ chrome.runtime.onMessage.addListener(
                 id: request.id
             });
         } else if (request.id == "saveDealerItemToGA") {
-            console.log('request.lotId', request.lotId);
-            analytics('hepart.send', 'event', 'lot', 'storeDealerLot', request.lotId);
+            console.info('saveDealerItem request', request);
+            if (!request.isSold) {
+                if (request.auctionDate) {
+                    analytics('hepart.send', 'event', 'lot', 'storeDealerLotWithTime', request.lotId + '_' + request.auctionDate);
+                } else {
+                    analytics('hepart.send', 'event', 'lot', 'storeDealerLot', request.lotId);
+                }
+            }
+
         } else if (request.id == "resetAlert") {
-            console.log('resetAlert');
+            //console.log('resetAlert');
             //resetAlert(request.itemId, sendResponse, 'reset_alert_for_' + request.itemId);
             // sendResponse({ farewell: 'reset_alert_for_' + request.itemId });
-            console.log('resetAlert in bg', request.itemId);
+            console.info('resetAlert in bg', request.itemId);
 
             chrome.alarms.clear(request.itemId);
         }
@@ -130,7 +136,7 @@ function createBasicNotification(params) {
 
     setTimeout(function () {
         chrome.notifications.clear(params.id, () => {
-            console.log("cleared");
+            console.info("notifications cleared");
         });
     }, 5000);
 }
@@ -142,7 +148,7 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
             url: "https://www.copart.com/lot/" + lotId[1]
         }, (tab) => {
             chrome.notifications.clear(notificationId, () => {
-                console.log(`Notification ${notificationId} is removed`);
+                console.info(`Notification ${notificationId} is removed`);
             });
         });
 
@@ -168,10 +174,13 @@ function openBookmarksPage() {
     }, () => onCreated);
 
     function onCreated() {
-        if (chrome.extension.lastError) {
-            console.error("linkto_bookmarks:", chrome.extension.lastError);
+        if (chrome.runtime.lastError) {
+            analytics('hepart.send', 'exception', {
+                'exDescription': chrome.runtime.lastError.message
+            });
+            console.error("linkto_bookmarks:", chrome.runtime.lastError.message);
         } else {
-            console.log("linkto_bookmarks created successfully");
+            console.info("linkto_bookmarks created successfully");
         }
     }
 }
@@ -192,10 +201,13 @@ chrome.runtime.onInstalled.addListener(function () {
     }, onMenuItemCreated);
 
     function onMenuItemCreated() {
-        if (chrome.extension.lastError) {
-            console.log("error creating item", chrome.extension.lastError.message);
+        if (chrome.runtime.lastError) {
+            analytics('hepart.send', 'exception', {
+                'exDescription': chrome.runtime.lastError.message
+            });
+            console.error("error creating menu item", chrome.runtime.lastError.message);
         } else {
-            console.log("item created successfully");
+            console.info("munu item successfully created");
         }
     }
 });
@@ -214,7 +226,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
 //                renderBookmarkTable();
 chrome.alarms.onAlarm.addListener(function (alarm) {
-    console.log("Alarm Elapsed Name " + alarm.name);
+    console.info("Alarm Elapsed Name " + alarm.name);
 
     if (alarm.name.includes('bookmark_')) {
         chrome.alarms.clear(alarm.name);
@@ -233,15 +245,18 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                 };
 
                 chrome.notifications.create(alarm.name, opt, () => {
-                    console.log("notification was creared");
+                    console.info("notification was cleared");
                     var dataToStore = {};
                     dataToStore[alarm.name] = JSON.stringify(_.omit(storedData, ['alarmHour', 'alarmMinute']));
                     chrome.storage.local.set(dataToStore, () => {
-                        if (chrome.extension.lastError) {
-                            console.error("Runtime error.", chrome.extension.lastError.message);
+                        if (chrome.runtime.lastError) {
+                            analytics('hepart.send', 'exception', {
+                                'exDescription': chrome.runtime.lastError.message
+                            });
+                            console.error("Runtime error.", chrome.runtime.lastError.message);
                             return;
                         }
-                        console.log('Alert has reset on tick');
+                        console.info('Alert has reset on tick');
                     });
                 });
             }
@@ -264,6 +279,6 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
 
 analytics('create', 'UA-117936283-1', 'auto', 'hepart'); // Replace with your property ID.
 analytics('hepart.send', 'pageview');
-analytics('hepart.set', 'checkProtocolTask', function () { });
+analytics('hepart.set', 'checkProtocolTask', function () {});
 analytics('hepart.require', 'displayfeatures');
 // analytics('hepart.set', 'dimension1', chrome.runtime.getManifest().version);

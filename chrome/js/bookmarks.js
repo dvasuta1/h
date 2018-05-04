@@ -31,6 +31,8 @@ function renderBookmarkTable() {
         var table = $('#table tbody').empty();
         var drawBookmarkRow = function (item) {
             //debugger;
+            var auctionHappened = item.saleDateNoTZ && moment().isAfter(item.saleDateNoTZ);
+            auctionHappened = auctionHappened == null ? true : auctionHappened;
             return `<td data-title="${chrome.i18n.getMessage('bookmarks_lotid')}">
                 <a href="https://copart.com/lot/${item.lotId}" target="_blank">${item.lotId}</a>
             </td>
@@ -42,8 +44,8 @@ function renderBookmarkTable() {
             </td>
             <td data-title="${chrome.i18n.getMessage('bookmarks_saledate')}" class='saleDate'>${item.saleDate}</td>
             <td data-title="${chrome.i18n.getMessage('bookmarks_alert')}" class='setAlert' data-parent="bookmark_${item.lotId}">
-                <div class="alertContainer">    
-                    <ul class='time'>
+            <div class="alertContainer ${auctionHappened  ? `hidden` : ''} ">    
+                    <ul class='time'> 
                         <li>
                             <select name='alertForHours' ${item['alarmHour'] !== undefined ? `disabled` : ""} class='alertForHours'>
                                 <option value='-1' disabled selected >hh</option>
@@ -66,10 +68,14 @@ function renderBookmarkTable() {
         };
 
         data.forEach(function (element) {
-            var inThePast = moment().isBefore(element.saleDateNoTZ);
-            console.log('inThePast', inThePast);
+            var auctionHappened = element.saleDateNoTZ && moment().isAfter(element.saleDateNoTZ);
+            console.info('auctionHappened', auctionHappened);
+            console.info('saleDate', element.saleDate);
+
+            console.info('saleDateNoTZ', moment(element.saleDateNoTZ).format('DD.MM.YYYY HH:mm'));
+
             var tr = document.createElement('tr');
-            inThePast && tr.classList.add('row_in_the_past');
+            auctionHappened && tr.classList.add('row_auction_happened');
             tr.classList.add('row_' + element.lotId);
             tr.innerHTML = drawBookmarkRow(element);
             fragment.appendChild(tr);
@@ -105,6 +111,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 var storedData = !_.isEmpty(obj) && JSON.parse(obj[id]);
                 var duration = moment.duration(`${hoursVal}:${minutesVal}:00`);
                 var time = moment(storedData.saleDateNoTZ).subtract(duration);
+                var startTime = +time.format('x')
+
+                if (Number.isNaN(startTime)) {
+                    alert('Damn');
+                    return;
+                }
 
                 if (moment().isAfter(time)) {
                     //alert('Выбраный временной интервал указывает на время в прошлом');
@@ -114,13 +126,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     var dataToStore = {};
                     dataToStore[id] = JSON.stringify(_.extend(storedData, { 'alarmHour': hoursVal, 'alarmMinute': minutesVal }));
                     chrome.storage.local.set(dataToStore, () => {
-                        if (chrome.extension.lastError) {
-                            console.error("Runtime error.", chrome.extension.lastError.message);
+                        if (chrome.runtime.lastError) {
+                            analytics('hepart.send', 'exception', {
+                                'exDescription': chrome.runtime.lastError.message
+                            });
+                            console.error("Runtime error.", chrome.runtime.lastError.message);
                         }
-                        console.log('Alert created');
+                        console.info('Alert created');
                         // console.log('a', +time.format('x'));
                         chrome.alarms.clear(id, function () {
-                            chrome.alarms.create(id, { when: +time.format('x') });
+                            chrome.alarms.create(id, { when: startTime });
                         });
                     });
                 }
@@ -129,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     $(document).on('click', '.resetAlert', function (e) {
-        console.log('reset');
+        console.info('reset alert');
         var bookmarkId = e.currentTarget.dataset.id;
         if (bookmarkId) {
             resetAlert(bookmarkId);
@@ -145,20 +160,26 @@ function resetAlert(id) {
             var dataToStore = {};
             dataToStore[id] = JSON.stringify(_.omit(storedData, ['alarmHour', 'alarmMinute']));
             chrome.storage.local.set(dataToStore, () => {
-                if (chrome.extension.lastError) {
-                    console.error("Runtime error.", chrome.extension.lastError.message);
+                if (chrome.runtime.lastError) {
+                    analytics('hepart.send', 'exception', {
+                        'exDescription': chrome.runtime.lastError.message
+                    });
+                    console.error("Runtime error.", chrome.runtime.lastError.message);
                     return;
                 }
-                console.log('alert is successfully reset');
+                console.info('alert is successfully reset');
                 chrome.runtime.sendMessage({
                     id: "resetAlert",
                     itemId: id
                 }, function (response) {
-                    if (chrome.extension.lastError) {
-                        console.error("Runtime error.", chrome.extension.lastError.message);
+                    if (chrome.runtime.lastError) {
+                        analytics('hepart.send', 'exception', {
+                            'exDescription': chrome.runtime.lastError.message
+                        });
+                        console.error("Runtime error.", chrome.runtime.lastError.message);
                         return;
                     }
-                    console.log('response cb in bookmarks', response.farewell);
+                    console.info('response cb in bookmarks', response.farewell);
 
                     // renderBookmarkTable();
                 });

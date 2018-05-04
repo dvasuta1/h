@@ -40,7 +40,7 @@ chrome.storage.local.get(["isNeedtoShowDealers", "isNeedToHideCountriesFooter", 
 						function () {
 							if ($('#serverSideDataTable tr').length === 0) return;
 							clearInterval(i);
-							console.log('LOADED');
+							console.info('LOADED');
 							listenMutations();
 						}, 2000);
 				}
@@ -101,11 +101,13 @@ function insertTableRows(data) {
 		var tmpl = `<div id='hepart_seller_type'><div class='details hepart_row'><label>${getTranslatedText("hepart_seller_type")}</label><span class='lot-details-desc col-md-6'>${data.std}</span></div></div>`;
 		tmpl += `<div id='hepart_seller_name'><div class='details hepart_row'><label>${getTranslatedText("hepart_seller_name")}</label><span  class='lot-details-desc col-md-6'>${data.snm}</span></div></div>`;
 		container.prepend($(tmpl));
-		if (data.std.toLowerCase().indexOf('dealer') !== -1) {
+		if (data.std.toLowerCase().includes('dealer')) {
 			storeDataToDB('dealersList', data.lotNumberStr);
 			chrome.runtime.sendMessage({
 				id: "saveDealerItemToGA",
-				lotId: data.lotNumberStr
+				lotId: data.lotNumberStr,
+				auctionDate: data.ad || false,
+				isSold: data.ess == 'Sold' || false
 			});
 		}
 	}
@@ -156,7 +158,7 @@ function storeDataToDB(storageName, lotId) {
 }
 
 function putIntoStore(storageName, storedData, callback) {
-	console.debug('putIntoStore');
+	console.info('putIntoStore');
 	var dataToStore = {};
 	dataToStore[storageName] = storedData;
 	chrome.storage.local.set(dataToStore, () => {
@@ -185,7 +187,7 @@ function markDealersOnTable(storageName, element) {
 
 function listenMutations() {
 	var callback = function (allmutations) {
-			console.log('MUTATIONS');
+			console.info('MUTATIONS');
 			markDealersOnTable('dealersList', '#serverSideDataTable tr');
 		},
 		mo = new MutationObserver(callback),
@@ -230,7 +232,7 @@ function addToBookmarks() {
 	fav.cleanTitle = $('h1.lot-vehicle-info .title').text();
 	fav.lotId = getLotId();
 	fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/, '');
-	var saleDateNoTZ = moment(fav.saleDate.replace(' EEST', '')); 
+	var saleDateNoTZ = moment(fav.saleDate.replace(' EEST', '').replace(' EET', '')); 
 	fav.saleDateNoTZ = saleDateNoTZ.unix() * 1000;
 	storeBookmarkToDB('bookmark_' + fav.lotId, fav);
 }
@@ -242,18 +244,17 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 function storeBookmarkToDB(storageName, data) {
-	console.debug('storeBookmarkToDB');
+	console.info('storeBookmarkToDB', data);
 	chrome.storage.local.get(storageName, (obj) => {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
-			console.log('data', data);
 			putIntoStore(storageName, JSON.stringify(data), addBookmarkNotification(data));
 		}
 	});
 }
 
 function addBookmarkNotification(data) {
-	console.debug('addBookmarkNotification');
+	console.info('addBookmarkNotification');
 	chrome.runtime.sendMessage({
 		id: "bookmarkAdded",
 		title: chrome.i18n.getMessage("notification_bookmark_added_title"),

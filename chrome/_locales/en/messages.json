@@ -100,7 +100,7 @@
         "description": "Hepart"
     },
     "bookmarks_select_correct_inverval_in_future": {
-        "message": "There's an error in reminder time set. It's set to $NAME$ which has already passed.",
+        "message": "There's an error in reminder time set. It's set to the moment which has already passed.",
         "description": "Hepart",
         "placeholders": {
             "name": {

@@ -100,7 +100,7 @@
         "description": "Hepart"
     },
     "bookmarks_select_correct_inverval_in_future": {
-        "message": "Ошибка установки времени. Напоминание указывает на уже прошедший момент времени, который был $NAME$ !",
+        "message": "Ошибка установки времени. Напоминание указывает на уже прошедший момент времени. Или аукцион уже завершен !",
         "description": "Hepart",
         "placeholders": {
             "name": {

@@ -100,7 +100,7 @@
         "description": "Hepart"
     },
     "bookmarks_select_correct_inverval_in_future": {
-        "message": "Помилка встановлення часу. Нагадуванна посилається на момент часу в минулому $NAME$ !",
+        "message": "Помилка встановлення часу. Нагадуванна посилається на момент часу. Або аукціон вже завершено!",
         "description": "Hepart",
         "placeholders": {
             "name": {
