@@ -58,8 +58,8 @@ function renderBookmarkTable() {
                     </ul>
                     <ul class='actions'>
                         <li>
-                        ${item['alarmMinute'] !== undefined ? `<div class='resetAlert' data-id="bookmark_${item.lotId}">Reset</div>` : ""}
-                        ${item['alarmMinute'] == undefined ? `<div class='saveAlert' data-id="bookmark_${item.lotId}" >Start</div>` : ""}
+                        ${item['alarmMinute'] !== undefined ? `<div class='resetAlert' data-id="bookmark_${item.lotId}">${chrome.i18n.getMessage('bookmarks_reset')}</div>` : ""}
+                        ${item['alarmMinute'] == undefined ? `<div class='saveAlert' data-id="bookmark_${item.lotId}" >${chrome.i18n.getMessage('bookmarks_start')}</div>` : ""}
                         <li>
                     </ul>
                 </div>
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var startTime = +time.format('x')
 
                 if (Number.isNaN(startTime)) {
-                    alert('Damn');
+                    alert('Damn, something wrong with auction date');
                     return;
                 }
 

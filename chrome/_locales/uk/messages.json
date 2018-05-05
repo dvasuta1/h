@@ -15,6 +15,10 @@
         "message": "Показать футер",
         "description": "Run button"
     }, 
+    "hepart_dealer": {
+        "message": "Увага! Диллер!",
+        "description": "Run button"
+    },  
     "o_page_title": {
         "message": "Hepart",
         "description": "Hepart"
@@ -53,6 +57,14 @@
     },
     "linkto_bookmarks": {
         "message": "pages/ua/bookmarks.html",
+        "description": "Hepart"
+    },
+    "bookmarks_reset": {
+        "message": "Відбій",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Старт",
         "description": "Hepart"
     },
     "bookmarks_page_title": {

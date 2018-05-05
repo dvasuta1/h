@@ -18,6 +18,10 @@
     "hepart_show_footer": {
         "message": "Show footer",
         "description": "Run button"
+    },   
+    "hepart_dealer": {
+        "message": "Attention! Dealer!",
+        "description": "Run button"
     },    
     "o_page_title": {
         "message": "Settings",
@@ -61,6 +65,14 @@
     },
     "contextMenuItemGoToBookmarks": {
         "message": "Go to Bookmarks",
+        "description": "Hepart"
+    },    
+    "bookmarks_reset": {
+        "message": "Reset",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Start",
         "description": "Hepart"
     },
     "bookmarks_page_title": {

@@ -61,6 +61,39 @@
 .hepart_row, .sold.hepart_final_price, .auction_date {
 	background: linear-gradient(to left, #F2C14E, #F78154) !important;
 }
+@keyframes pulse {
+	0% {
+		background-color: transparent;
+	}
+	25%, 75% {
+	  background-color: black;
+	}
+	100% {
+	  background-color: red;
+	}
+  }
+  @keyframes infinite-spinning {
+	from {
+	  transform: rotate(0deg);
+	}
+	to {
+	  transform: rotate(360deg);
+	}
+  }
+#hepart_dealers {
+	width: 26px;
+	height: 26px;
+	margin-right: 15px;
+	float: left;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/ext_icons/dealer_32.png') center center no-repeat, 
+	black; 	
+	border-radius: 3px;
+	 -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.43);
+	-moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.43);
+	box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.43);
+	animation: pulse 3s infinite, infinite-spinning 300s infinite;
+}
+
 #hepart_no_data {
 	padding: 1px 3px;
 	margin-right:10px;

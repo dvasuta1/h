@@ -39,15 +39,47 @@ chrome.runtime.onInstalled.addListener(function (details) {
             break;
         case 'update':
             console.info('update');
-            /*chrome.tabs.create({
-                url: "https://www.facebook.com/hepart/posts/583662778666558"
-            }); */
+            chrome.tabs.create({
+                url: "https://www.facebook.com/hepart/posts/587266801639489"
+            }); 
             setDefaults();
+            storeDataToDB('dealersList', importedDealerLots);
             break;
         default:
             break;
     }
 });
+
+function storeDataToDB(storageName, lotId) {
+    chrome.storage.local.get(storageName, (obj) => {
+        var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
+
+        if (_.isUndefined(obj[storageName])) {
+            var d = JSON.stringify(lotId);
+            putIntoStore(storageName, d)
+        } else if (storedData && _.indexOf(storedData, lotId) === -1) {
+            storedData = _.uniq(lotId);
+            storedData = JSON.stringify(storedData);
+            putIntoStore(storageName, storedData);
+        }
+    });
+
+}
+
+function putIntoStore(storageName, storedData, callback) {
+    console.debug('putIntoStore');
+    var dataToStore = {};
+    dataToStore[storageName] = storedData;
+    console.log(JSON.parse(storedData).length);
+    chrome.storage.local.set(dataToStore, () => {
+        if (chrome.extension.lastError) {
+            console.error("Runtime error.", chrome.extension.lastError);
+        }
+        callback && callback();
+    });
+
+}
+
 
 chrome.runtime.onUpdateAvailable.addListener(function (details) {
     chrome.runtime.reload();

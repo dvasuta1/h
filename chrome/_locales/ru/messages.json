@@ -18,6 +18,10 @@
     "hepart_show_footer": {
         "message": "Показать футер",
         "description": "Run button"
+    }, 
+    "hepart_dealer": {
+        "message": "Внимание! Диллер!",
+        "description": "Run button"
     },   
     "o_page_title": {
         "message": "Настройки",
@@ -65,6 +69,14 @@
     },
     "contextMenuItemGoToBookmarks": {
         "message": "Перейти в закладки",
+        "description": "Hepart"
+    },
+    "bookmarks_reset": {
+        "message": "Сброс",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Старт",
         "description": "Hepart"
     },
     "bookmarks_my_bookmarks": {
