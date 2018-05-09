@@ -18,6 +18,10 @@
     "hepart_show_footer": {
         "message": "Show footer",
         "description": "Run button"
+    },   
+    "hepart_dealer": {
+        "message": "Attention! Dealer!",
+        "description": "Run button"
     },    
     "o_page_title": {
         "message": "Settings",
@@ -62,6 +66,14 @@
     "contextMenuItemGoToBookmarks": {
         "message": "Go to Bookmarks",
         "description": "Hepart"
+    },    
+    "bookmarks_reset": {
+        "message": "Reset",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Start",
+        "description": "Hepart"
     },
     "bookmarks_page_title": {
         "message": "Hepart Bookmarks",
@@ -91,6 +103,24 @@
         "message": "Sale date",
         "description": "Hepart"
     },
+    "bookmarks_alert": {
+        "message": "Reminder",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval": {
+        "message": "Please set correct time delay in hh:mm, not zeroes",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval_in_future": {
+        "message": "There's an error in reminder time set. It's set to the moment which has already passed.",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
     "general_remove": {
         "message": "Remove",
         "description": "Hepart"
@@ -99,8 +129,22 @@
         "message": "New bookmark",
         "description": "Hepart"
     },
+    "notification_bookmark_alert_title": {
+        "message": "ATTENTION! Auction is comming!",
+        "description": "Hepart"
+    },
     "notification_bookmark_added_message": {
         "message": "Vehicle $NAME$ has been saved to bookmarks",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "notification_bookmark_clickme": {
+        "message": "$NAME$. Click me to check",
         "description": "Hepart",
         "placeholders": {
             "name": {

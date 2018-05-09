@@ -18,6 +18,10 @@
     "hepart_show_footer": {
         "message": "Показать футер",
         "description": "Run button"
+    }, 
+    "hepart_dealer": {
+        "message": "Внимание! Диллер!",
+        "description": "Run button"
     },   
     "o_page_title": {
         "message": "Настройки",
@@ -67,6 +71,14 @@
         "message": "Перейти в закладки",
         "description": "Hepart"
     },
+    "bookmarks_reset": {
+        "message": "Сброс",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Старт",
+        "description": "Hepart"
+    },
     "bookmarks_my_bookmarks": {
         "message": "Закладки",
         "description": "Hepart"
@@ -91,8 +103,30 @@
         "message": "Дата продажи",
         "description": "Hepart"
     },
+    "bookmarks_alert": {
+        "message": "Напоминание",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval": {
+        "message": "Сначала установите временной интервал в часах и минутах. Просто нули тоже не надо ставить",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval_in_future": {
+        "message": "Ошибка установки времени. Напоминание указывает на уже прошедший момент времени. Или аукцион уже завершен !",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
     "general_remove": {
         "message": "Удалить",
+        "description": "Hepart"
+    },
+    "notification_bookmark_alert_title": {
+        "message": "Не пропустите аукцион!",
         "description": "Hepart"
     },
     "notification_bookmark_added_title": {
@@ -101,6 +135,16 @@
     },
     "notification_bookmark_added_message": {
         "message": "Лот $NAME$ был добавлен в закладки!",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
+    "notification_bookmark_clickme": {
+        "message": "$NAME$. Счелкните здесь для перехода к лоту",
         "description": "Hepart",
         "placeholders": {
             "name": {

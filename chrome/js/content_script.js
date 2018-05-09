@@ -5,51 +5,51 @@
 
 var Opts = {};
 chrome.storage.local.get(["isNeedtoShowDealers", "isNeedToHideCountriesFooter", "isNeedToHideAnnoyingFooter"], (prefs) => {
-		Opts.isNeedtoShowDealers = prefs.isNeedtoShowDealers;
-		Opts.isNeedToHideCountriesFooter = prefs.isNeedToHideCountriesFooter;
-		Opts.isNeedToHideAnnoyingFooter = prefs.isNeedToHideAnnoyingFooter;
+	Opts.isNeedtoShowDealers = prefs.isNeedtoShowDealers;
+	Opts.isNeedToHideCountriesFooter = prefs.isNeedToHideCountriesFooter;
+	Opts.isNeedToHideAnnoyingFooter = prefs.isNeedToHideAnnoyingFooter;
 
-		if (Opts.isNeedToHideAnnoyingFooter) {
-			$('.footer.footer .footer-mid').addClass('hidden');
-			$(function () {
-				$(`<div id="showbtn" title="getTranslatedText("hepart_show_footer")"></div>`).appendTo('.footer.footer .footer-top .row:first-child');
-			});
-			$(document).on('click', '#showbtn', function (e) {
-				$('.footer.footer .footer-mid').toggleClass('hidden');
-				$('#showbtn').toggleClass('off');
-				window.scrollTo(0, document.body.scrollHeight);
-			});
-		}
+	if (Opts.isNeedToHideAnnoyingFooter) {
+		$('.footer.footer .footer-mid').addClass('hidden');
+		$(function () {
+			$(`<div id="showbtn" title="getTranslatedText("hepart_show_footer")"></div>`).appendTo('.footer.footer .footer-top .row:first-child');
+		});
+		$(document).on('click', '#showbtn', function (e) {
+			$('.footer.footer .footer-mid').toggleClass('hidden');
+			$('#showbtn').toggleClass('off');
+			window.scrollTo(0, document.body.scrollHeight);
+		});
+	}
 
-		if (Opts.isNeedToHideCountriesFooter) {
-			$('.footer-bottom.footer-btm').addClass('hidden');
-		}
+	if (Opts.isNeedToHideCountriesFooter) {
+		$('.footer-bottom.footer-btm').addClass('hidden');
+	}
 
-		chrome.runtime.onMessage.addListener(
-			function (request, sender, sendResponse) {
-				if (request.action === "drawHepartBtn") {
-					var i = setInterval(
-						function () {
-							if ($('#email').length === 0) return;
-							clearInterval(i);
-							drawHepardButton();
-						}, 1000);
-				}
-				if (request.action === "drawDealers" && Opts.isNeedtoShowDealers) {
-					var i = setInterval(
-						function () {
-							if ($('#serverSideDataTable tr').length === 0) return;
-							clearInterval(i);
-							console.log('LOADED');
-							listenMutations();
-						}, 2000);
-				}
-				if (request.action === "addToBookmarks") {
-					addToBookmarks();
-				}
+	chrome.runtime.onMessage.addListener(
+		function (request, sender, sendResponse) {
+			if (request.action === "drawHepartBtn") {
+				var i = setInterval(
+					function () {
+						if ($('#email').length === 0) return;
+						clearInterval(i);
+						drawHepardButton();
+					}, 1000);
 			}
-		);
-	});
+			if (request.action === "drawDealers" && Opts.isNeedtoShowDealers) {
+				var i = setInterval(
+					function () {
+						if ($('#serverSideDataTable tr').length === 0) return;
+						clearInterval(i);
+						console.info('drawDealers LOADED');
+						listenMutations();
+					}, 2000);
+			}
+			if (request.action === "addToBookmarks") {
+				addToBookmarks();
+			}
+		}
+	);
+});
 
 function drawHepardButton() {
 	if ($('#hepart_button').length != 0) return;
@@ -66,6 +66,12 @@ function drawHepardButton() {
 			$(this).off('click');
 			getLotinfoById();
 		});
+
+	var lot = getLotId();	 
+	if (lot && importedDealerLots.includes(String(lot))) {
+		var d = document.createElement('span');
+		 $(d).attr('id', 'hepart_dealers').attr('title', getTranslatedText("hepart_dealer")).prependTo($("#exportLotDetails"));
+	}
 }
 
 function getLotId() {
@@ -76,14 +82,14 @@ function getLotId() {
 function getLotinfoById() {
 	var lotId = getLotId();
 	if (lotId) {
-		 fetch("https://www.copart.com/public/data/lotdetails/solr/" + lotId)
-		 .then((response) => {
-			 return response.json();
- 		 })
-		 .then((data) => {
-			data && data.data.lotDetails && insertTableRows(data.data.lotDetails);
-		 })
-		 .catch((error) => console.error(`Error: ${error}`));
+		fetch("https://www.copart.com/public/data/lotdetails/solr/" + lotId)
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				data && data.data.lotDetails && insertTableRows(data.data.lotDetails);
+			})
+			.catch((error) => console.error(`Error: ${error}`));
 	} else {
 		throw new Error('Wrong lot id!');
 	}
@@ -101,11 +107,13 @@ function insertTableRows(data) {
 		var tmpl = `<div id='hepart_seller_type'><div class='details hepart_row'><label>${getTranslatedText("hepart_seller_type")}</label><span class='lot-details-desc col-md-6'>${data.std}</span></div></div>`;
 		tmpl += `<div id='hepart_seller_name'><div class='details hepart_row'><label>${getTranslatedText("hepart_seller_name")}</label><span  class='lot-details-desc col-md-6'>${data.snm}</span></div></div>`;
 		container.prepend($(tmpl));
-		if (data.std.toLowerCase().indexOf('dealer') !== -1) {
+		if (data.std.toLowerCase().includes('dealer')) {
 			storeDataToDB('dealersList', data.lotNumberStr);
 			chrome.runtime.sendMessage({
 				id: "saveDealerItemToGA",
-				lotId: data.lotNumberStr
+				lotId: data.lotNumberStr,
+				auctionDate: data.ad || false,
+				isSold: data.ess == 'Sold' || false
 			});
 		}
 	}
@@ -156,16 +164,15 @@ function storeDataToDB(storageName, lotId) {
 }
 
 function putIntoStore(storageName, storedData, callback) {
-	console.debug('putIntoStore');
+	console.info('putIntoStore');
 	var dataToStore = {};
 	dataToStore[storageName] = storedData;
 	chrome.storage.local.set(dataToStore, () => {
-		if (chrome.runtime.lastError) {
+		if (chrome.extension.lastError) {
 			console.error("Runtime error.");
 		}
 		callback && callback();
 	});
-
 }
 
 function markDealersOnTable(storageName, element) {
@@ -185,9 +192,9 @@ function markDealersOnTable(storageName, element) {
 
 function listenMutations() {
 	var callback = function (allmutations) {
-			console.log('MUTATIONS');
-			markDealersOnTable('dealersList', '#serverSideDataTable tr');
-		},
+		console.info('MUTATIONS');
+		markDealersOnTable('dealersList', '#serverSideDataTable tr');
+	},
 		mo = new MutationObserver(callback),
 		options = {
 			'attributeFilter': ['class'],
@@ -230,6 +237,8 @@ function addToBookmarks() {
 	fav.cleanTitle = $('h1.lot-vehicle-info .title').text();
 	fav.lotId = getLotId();
 	fav.saleDate = $('.lot-details-desc.sale-date').text().replace(/[\n\r]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/^\s+|\s+$/, '');
+	var saleDateNoTZ = moment(fav.saleDate.replace(' EEST', '').replace(' EET', ''));
+	fav.saleDateNoTZ = saleDateNoTZ.unix() * 1000;
 	storeBookmarkToDB('bookmark_' + fav.lotId, fav);
 }
 
@@ -240,18 +249,17 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 function storeBookmarkToDB(storageName, data) {
-	console.debug('storeBookmarkToDB');
+	console.info('storeBookmarkToDB', data);
 	chrome.storage.local.get(storageName, (obj) => {
 		var storedData = !_.isEmpty(obj) && JSON.parse(obj[storageName]);
 		if (_.isUndefined(obj[storageName])) {
-			console.log('data', data);
 			putIntoStore(storageName, JSON.stringify(data), addBookmarkNotification(data));
 		}
 	});
 }
 
 function addBookmarkNotification(data) {
-	console.debug('addBookmarkNotification');
+	console.info('addBookmarkNotification');
 	chrome.runtime.sendMessage({
 		id: "bookmarkAdded",
 		title: chrome.i18n.getMessage("notification_bookmark_added_title"),

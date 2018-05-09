@@ -1,5 +1,5 @@
 #demo {
-    max-width: 1000px;
+    max-width: 1100px;
 }
 .highlighticon {
     width: 16px;
@@ -67,7 +67,7 @@
 
 .lotIcon-SITE-DR {
     margin: -117px 0 0 -166px
-}
+}s
 
 .lotIcon-DVAA {
     margin: -19px 0 0 -218px
@@ -102,4 +102,39 @@ a {
 }
 #table td span.title {
     font-weight: 500;
+}
+#table tr {
+    min-height: 100px;
+}
+#table .time, #table .actions  {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    float: left;
+}
+#table .time li  {
+    list-style: none;
+    float: left;
+    margin-top: 0;
+}
+#table .actions li {
+    list-style: none;
+}
+#table .actions li .resetAlert {
+    background-color: blue;
+}
+#table .actions li .saveAlert{
+    background-color: green;
+}
+#table .actions li div {
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 10px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2rem;
+    display: inline;
+}
+.alertContainer {
+    min-width: 100px;
 }

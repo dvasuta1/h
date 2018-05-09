@@ -15,6 +15,10 @@
         "message": "Показать футер",
         "description": "Run button"
     }, 
+    "hepart_dealer": {
+        "message": "Увага! Диллер!",
+        "description": "Run button"
+    },  
     "o_page_title": {
         "message": "Hepart",
         "description": "Hepart"
@@ -55,6 +59,14 @@
         "message": "pages/ua/bookmarks.html",
         "description": "Hepart"
     },
+    "bookmarks_reset": {
+        "message": "Відбій",
+        "description": "Hepart"
+    },
+    "bookmarks_start": {
+        "message": "Старт",
+        "description": "Hepart"
+    },
     "bookmarks_page_title": {
         "message": "Hepart - Закладки",
         "description": "Hepart"
@@ -91,13 +103,45 @@
         "message": "Дата продажу",
         "description": "Hepart"
     },
+    "bookmarks_alert": {
+        "message": "Нагадування",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval": {
+        "message": "Спочатку, установіть інтервал в годинах і хвилинах. Ставити тільки нулі теж погана ідея",
+        "description": "Hepart"
+    },
+    "bookmarks_select_correct_inverval_in_future": {
+        "message": "Помилка встановлення часу. Нагадуванна посилається на момент часу. Або аукціон вже завершено!",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
+    },
     "general_remove": {
         "message": "Видалити",
+        "description": "Hepart"
+    },
+    "notification_bookmark_alert_title": {
+        "message": "Не пропустіть аукціон!",
         "description": "Hepart"
     },
     "notification_bookmark_added_title": {
         "message": "Нова закладка",
         "description": "Hepart"
+    },
+    "notification_bookmark_clickme": {
+        "message": "$NAME$. Клікнуть тут, щас перейти до лоту ",
+        "description": "Hepart",
+        "placeholders": {
+            "name": {
+                "content": "$1",
+                "example": "Cira"
+            }
+        }
     },
     "notification_bookmark_added_message": {
         "message": "Лот $NAME$ був доданий до закладок!",
