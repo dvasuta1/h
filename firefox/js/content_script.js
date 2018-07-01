@@ -115,9 +115,9 @@ function insertTableRows(data) {
 		var tmpl = `<div id='hepart_repair_cost'><div class='details hepart_row'><label>${getTranslatedText("hepart_repair_cost")}</label><span class='lot-details-desc col-md-6'>${formatter.format(data.rc)} ${data.cuc}</span></div></div>`;
 		container.prepend($(tmpl));
 	}
-	if (data.ahb !== 0) {
+	if (data.ahb !== 0 || data.awardedHighBid !== 0) {
 		var container = $(document.querySelectorAll('[name=counterBidForm] .sold-bid .sold'));
-		var tmpl = `<div id='hepart_final_price' class='sold hepart_final_price'>${getTranslatedText("hepart_final_price")} ${formatter.format(data.ahb)} ${data.cuc} </div>`;
+		var tmpl = `<div id='hepart_final_price' class='sold hepart_final_price'>${getTranslatedText("hepart_final_price")} ${formatter.format(data.ahb || data.awardedHighBid)} ${data.cuc} </div>`;
 		container.after($(tmpl));
 	}
 	if (data.ifs) {

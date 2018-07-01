@@ -40,7 +40,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         case 'update':
             console.info('update');
             chrome.tabs.create({
-                url: "https://www.facebook.com/hepart/posts/587266801639489"
+                url: "https://www.facebook.com/581497338883102/posts/623567974676038/"
             }); 
             setDefaults();
             storeDataToDB('dealersList', importedDealerLots);

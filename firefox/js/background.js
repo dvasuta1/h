@@ -39,9 +39,10 @@ browser.runtime.onInstalled.addListener(function (details) {
             });
             break;
         case 'update':
+        
             console.log('update');
             var creating = browser.tabs.create({
-                url: "https://www.facebook.com/hepart/posts/581511342215035"
+                url: "https://www.facebook.com/581497338883102/posts/623567974676038/"
             });
             creating
                 .then((tab) => {
